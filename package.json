@@ -1,0 +1,25 @@
+{
+  "name": "zerod-template",
+  "version": "1.0.4",
+  "description": "zerod-template",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "post-commit": "exec < /dev/tty && node scripts/check-version.js",
+    "update": "git tag -a 1.0.4 && git push origin 1.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zym2525/template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zym2525/template/issues"
+  },
+  "homepage": "https://github.com/zym2525/template#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "child_process": "^1.0.2",
+    "inquirer": "^7.2.0"
+  }
+}
