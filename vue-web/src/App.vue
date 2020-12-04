@@ -8,9 +8,11 @@
 
 <script>
   import HelloWorld from "./components/HelloWorld.vue";
+  import { ResizeHandler } from "@/mixins";
 
   export default {
     name: "app",
+    mixins: [ResizeHandler],
     components: {
       HelloWorld,
     },

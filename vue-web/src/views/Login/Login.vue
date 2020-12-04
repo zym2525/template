@@ -37,6 +37,20 @@
         },
       };
     },
+    async mounted() {
+      try {
+        let r = await storage.load({
+          key: "storageTest",
+          id: `1`,
+          // syncParams: { UserId: params.userId, GradeId: params.gradeId },
+          autoSync: true,
+          syncInBackground: true,
+        });
+        console.log("r: ", r);
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    },
     methods: {
       login() {
         this.$refs.form.validate((valid) => {

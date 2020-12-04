@@ -4,7 +4,7 @@
   "description": "zerod-template",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "post-commit": "exec < /dev/tty && node scripts/check-version.js",
+    "post-commit": "exec < /dev/tty&& node scripts/check-version.js",
     "update": "git tag -a 1.0.5 && git push origin 1.0.5"
   },
   "repository": {

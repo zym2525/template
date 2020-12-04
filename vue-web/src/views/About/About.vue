@@ -1,5 +1,5 @@
 <template>
-  <div>this is About</div>
+  <div>About</div>
 </template>
 
 <script>
@@ -8,5 +8,8 @@
   };
 </script>
 
-<style>
+<style lang="scss" scoped>
+  @import "@/styles/common.scss";
+  @include b(about) {
+  }
 </style>

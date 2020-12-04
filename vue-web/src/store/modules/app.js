@@ -1,18 +1,21 @@
 import Cookies from 'js-cookie'
+import { DeviceType } from '@/constants'
 
 const state = {
-  device: 'desktop',
+  deviceType: DeviceType.Desktop,
+  isMobile: false
 }
 
 const mutations = {
-  TOGGLE_DEVICE: (state, device) => {
-    state.device = device
+  TOGGLE_DEVICE: (state, deviceType) => {
+    state.deviceType = deviceType;
+    state.isMobile = deviceType != DeviceType.Desktop;
   },
 }
 
 const actions = {
-  toggleDevice({ commit }, device) {
-    commit('TOGGLE_DEVICE', device)
+  toggleDevice({ commit }, deviceType) {
+    commit('TOGGLE_DEVICE', deviceType)
   },
 }
 

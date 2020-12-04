@@ -10,7 +10,7 @@ function broadcast({ componentName, eventName, params, type }) {
 }
 export default {
     methods: {
-        dispatch(componentName, eventName, params) {
+        $_dispatch(componentName, eventName, params) {
             var parent = this.$parent || this.$root;
             var name = parent.$options.name;
 
@@ -25,7 +25,7 @@ export default {
                 parent.$emit.apply(parent, [eventName].concat(params));
             }
         },
-        broadcast(componentName, eventName, params) {
+        $_broadcast(componentName, eventName, params) {
             broadcast.call(this, { componentName, eventName, params });
         },
     }
