@@ -17,7 +17,8 @@ public class RNNativePackage implements ReactPackage {
                 // Modules from third-party
                 new HttpCacheModule(reactContext),
                 new OrientationModule(reactContext),
-                new RNAliyunOssModule(reactContext)
+                new RNAliyunOssModule(reactContext),
+                new RNConfigModule(reactContext)
         });
     }
 

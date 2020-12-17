@@ -6,8 +6,19 @@ import {
   NativeModules,
   Platform
 } from "react-native";
-import Config from '../../../baseConfig'
-const { RNAliyunOSS } = NativeModules;
+// import Config from '../../../baseConfig'
+const Config = {
+  oss: {
+    accessKey: {
+      AccessKey: '',
+      SecretKey: '',
+    },
+    endPoint: '',
+    bucketName: ''
+  }
+}
+const { RNAliyunOSS, RNConfig } = NativeModules;
+console.log('RNConfig: ', RNConfig);
 const UPLOAD_EVENT = 'uploadProgress';
 const DOWNLOAD_EVENT = 'downloadProgress';
 const _subscriptions = new Map();
