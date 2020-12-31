@@ -226,9 +226,15 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation 'com.aliyun.dpa:oss-android-sdk:2.4.5'
+    implementation 'com.aliyun.dpa:oss-android-sdk:+'
 
     implementation 'com.github.dfqin:grantor:2.5'
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'
+    implementation  'com.scwang.smart:refresh-header-classics:2.0.1'
+    implementation  'com.scwang.smart:refresh-footer-classics:2.0.1'
+    implementation  'com.scwang.smart:refresh-header-radar:2.0.1'
 }
 
 // Run this once to be able to run the application with BUCK

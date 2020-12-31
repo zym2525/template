@@ -22,11 +22,6 @@ export function trim(str) {
     return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
-//获取数据
-export const getData = p => o =>
-    p.reduce((xs, x) =>
-        (xs && xs[x]) ? xs[x] : null, o)
-
 export function curry(fn) {
     var args = [].slice.call(arguments, 1);
     return function () {
@@ -174,4 +169,61 @@ export function checkIsFlv(filename) {
 export function checkPhoneNumberValidity(phoneNumber) {
     phoneNumber = phoneNumber.replace(/\D/g, '').substring(0, 11);
     return phoneNumber.length >= 11 && /^1[3456789]\d{9}$/.test(phoneNumber);
+}
+
+/**按ascii码从小到大排序
+ *
+ * @param obj
+ * @returns {string}
+ */
+export function sort_ascii(obj) {
+    let arr = new Array();
+    let num = 0;
+    for (let i in obj) {
+        arr[num] = i;
+        num++;
+    }
+    let sortArr = arr.sort();
+    let str = '';             //自定义排序字符串
+    for (let i in sortArr) {
+        str += sortArr[i] + '=' + obj[sortArr[i]] + '&';
+    }
+    //去除两侧字符串
+    let char = '&'
+    str = str.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '');
+
+    return str;
+}
+
+/**
+ * This method is similar to lodash `flowRight`. It permits to easily compose
+ * several high order components.
+ *
+ * @static
+ * @category Utilities
+ * @param {...Function} [funcs] The functions to invoke.
+ * @returns {Function} Returns the new composite function.
+ * @example
+ *
+ * const enhance = compose(pure, withProps({foo: 'bar'}));
+ * const Component = enhance(MyComponent);
+ */
+export function compose() {
+    for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
+        funcs[_key] = arguments[_key];
+    }
+
+    if (funcs.length === 0) {
+        return _identity2.default;
+    }
+
+    if (funcs.length === 1) {
+        return funcs[0];
+    }
+
+    return funcs.reduce(function (a, b) {
+        return function () {
+            return a(b.apply(undefined, arguments));
+        };
+    });
 }

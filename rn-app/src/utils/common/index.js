@@ -17,7 +17,9 @@ export {
     nbsp2Ensp,
     fitPx,
     checkIsFlv,
-    checkPhoneNumberValidity
+    checkPhoneNumberValidity,
+    compose,
+    sort_ascii
 } from './mixin.js'
 
 export {

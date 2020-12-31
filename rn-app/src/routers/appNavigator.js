@@ -5,6 +5,7 @@ import { horizontalNavigationOptions, transparencyStatusBarHeaderConfig, transpa
 // import { AppStack } from './tabNavigator'
 import HomeScreen from '@/view/Home/Home'
 import TestScreen from '@/view/Test/Test'
+import RefreshListScreen from '@/view/RefreshList/RefreshList'
 
 // AppStack.navigationOptions = { headerShown: false }
 
@@ -13,6 +14,7 @@ export const AppNavigator = createStackNavigator(
         // AppStack: AppStack,
         Home: HomeScreen,
         Test: TestScreen,
+        RefreshList: RefreshListScreen,
     },
     {
         initialRouteName: 'Home',

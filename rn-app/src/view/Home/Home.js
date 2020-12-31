@@ -19,17 +19,19 @@ class Home extends Component {
 
     async componentDidMount() {
 
-        let r1 = await userService.testGet({})
-        console.log('r1: ', r1);
+        // let r1 = await userService.testGet({})
+        // console.log('r1: ', r1);
 
     }
 
 
 
     render() {
+        let { navigation } = this.props;
         return (
             <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: StyleConfig.status_height }}>
                 <Text>this is a home</Text>
+                <Text style={{ fontSize: 30 }} onPress={() => navigation.navigate('RefreshList')}>go to RefreshList</Text>
             </View>
         );
     }
