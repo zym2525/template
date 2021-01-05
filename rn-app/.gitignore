@@ -64,3 +64,6 @@ buck-out/
 
 android/app/src/main/res/drawable-*
 android/app/release
+
+src/view/ParallaxHeader/*
+src/components/Parallax/*

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, StatusBar, FlatList } from 'react-native';
-import { Text, widthLoading } from '@/components'
+import { View, StyleSheet, Image, StatusBar, FlatList, ScrollView } from 'react-native';
+import { Text, widthLoading, SmartRefreshLayout, BezierRadarHeader } from '@/components'
 import StyleConfig from '@/style/config'
 import _compose from 'recompact/compose';
 
@@ -10,8 +10,28 @@ import { bindActionCreators } from 'redux'
 import * as userActions from '@/actions/user'
 import * as userService from '@/services/userService'
 
+
+const List = [
+    {
+        router: 'RefreshList',
+        name: 'go to RefreshList'
+    },
+    {
+        router: 'StickyItem',
+        name: 'go to StickyItem'
+    },
+    {
+        router: 'ParallaxHeader',
+        name: 'go to ParallaxHeader'
+    }
+]
+
 @widthLoading(props => props.loading)
 class Home extends Component {
+
+    static navigationOptions = ({ navigation }) => ({
+        headerShown: false
+    });
 
     constructor(props) {
         super(props);
@@ -29,14 +49,30 @@ class Home extends Component {
     render() {
         let { navigation } = this.props;
         return (
-            <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: StyleConfig.status_height }}>
-                <Text>this is a home</Text>
-                <Text style={{ fontSize: 30 }} onPress={() => navigation.navigate('RefreshList')}>go to RefreshList</Text>
+            <View style={{ flex: 1, backgroundColor: '#fff', }}>
+                <FlatList
+                    refreshControl={<SmartRefreshLayout HeaderComponent={() => <BezierRadarHeader />} />}
+                    data={List}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) =>
+                        <Text style={styles.listItem} onPress={() => navigation.navigate(item.router)}>{item.name}</Text>
+                    }
+                />
             </View>
         );
     }
 
 }
+
+const styles = StyleSheet.create({
+    listItem: {
+        height: 100,
+        borderBottomWidth: 1,
+        borderBottomColor: '#dcdcdc',
+        fontSize: 28,
+        textAlign: 'center'
+    }
+})
 
 export default connect((state, props) => ({
     loading: state.common.loading,

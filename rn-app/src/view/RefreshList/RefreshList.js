@@ -47,7 +47,7 @@ class RefreshList extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <SmartRefreshLayout
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, }}
                     onRefresh={this.onRefresh.bind(this)}
                     onLoadMore={this.onLoadMore.bind(this)}
                     ref={this.refreshList}

@@ -5,12 +5,17 @@ import PropTypes from 'prop-types';
 export const RefreshEventType = {
     OnStateChanged: 1,
     OnRefresh: 2,
-    OnLoadMore: 3
+    OnLoadMore: 3,
+    onFooterMoving: 4,
 }
 
 class SmartRefreshLayout extends Component {
 
     static propTypes = {
+        /**
+         * @param 主题颜色
+         */
+        primaryColor: PropTypes.string,
         /**
          * @param 显示下拉高度/手指真实下拉高度=阻尼效果
          */
@@ -123,20 +128,50 @@ class SmartRefreshLayout extends Component {
 
     onChange(event) {
         // console.log('event: ', event.nativeEvent);
-        let { onRefresh, onLoadMore } = this.props;
         switch (event.nativeEvent.type) {
             case RefreshEventType.OnStateChanged:
                 this.onStateChanged(event.nativeEvent.event);
                 break;
             case RefreshEventType.OnRefresh:
-                onRefresh && onRefresh();
+                this._handleOnRefresh();
                 break;
             case RefreshEventType.OnLoadMore:
-                onLoadMore && onLoadMore();
+                this._handleOnLoadMore();
+                break;
+            case RefreshEventType.onFooterMoving:
+                this._handeOnFooterMoving(event.nativeEvent.event);
                 break;
             default:
                 break;
         }
+    }
+
+    _handleOnRefresh() {
+        let { onRefresh } = this.props;
+        if (onRefresh) {
+            onRefresh();
+        } else {
+            this.finishRefresh({ delayed: 2000 })
+        }
+    }
+
+    _handleOnLoadMore() {
+        let { onLoadMore } = this.props;
+        if (onLoadMore) {
+            onLoadMore();
+        } else {
+            this.finishLoadMore({ delayed: 2000 })
+        }
+    }
+
+    /**
+     * 
+     * @param {object} data 
+     * @example data:{percent: 0.019999999552965164, maxDragHeight: 400, footerHeight: 200, offset: 4, isDragging: false}
+     */
+    _handeOnFooterMoving(data) {
+        let { onFooterMoving } = this.props;
+        onFooterMoving && onFooterMoving(data);
     }
 
     onStateChanged(event) {
@@ -260,9 +295,9 @@ class SmartRefreshLayout extends Component {
     }
 
     render() {
-        let { children, ...rest } = this.props;
+        let { children, style, ...rest } = this.props;
         return (
-            <RNSmartRefreshLayout {...rest} onChange={this.onChange} >
+            <RNSmartRefreshLayout style={[{ zIndex: -1, }, style]} {...rest} onChange={this.onChange} >
                 {this._renderHeader()}
                 {React.Children.only(children)}
                 {this._renderFooter()}
@@ -273,6 +308,7 @@ class SmartRefreshLayout extends Component {
 
 SmartRefreshLayout.propTypes = {
     ...ViewPropTypes, // include the default view properties
+    ...SmartRefreshLayout.propTypes,
 };
 
 let RNSmartRefreshLayout = requireNativeComponent('RNSmartRefreshLayout', SmartRefreshLayout, {

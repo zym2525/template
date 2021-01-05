@@ -5,6 +5,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.hellozerod.smartrefreshlayout.RNClassicsHeader;
 import com.hellozerod.smartrefreshlayout.RNRadarHeaderManager;
 import com.hellozerod.smartrefreshlayout.SmartRefreshLayoutManager;
 
@@ -32,7 +33,8 @@ public class RNNativePackage implements ReactPackage {
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
                 new SmartRefreshLayoutManager(),
-                new RNRadarHeaderManager()
+                new RNRadarHeaderManager(),
+                new RNClassicsHeader()
         );
     }
 }

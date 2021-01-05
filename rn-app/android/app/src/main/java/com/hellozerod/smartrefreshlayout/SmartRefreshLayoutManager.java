@@ -1,5 +1,6 @@
 package com.hellozerod.smartrefreshlayout;
 
+import android.graphics.Color;
 import android.view.View;
 
 import com.facebook.infer.annotation.Assertions;
@@ -8,6 +9,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -63,14 +65,14 @@ public class SmartRefreshLayoutManager extends ViewGroupManager<ReactSmartRefres
     }
 
     /**
-     * 显示下拉高度/手指真实下拉高度=阻尼效果
+     * 主题颜色
      * @param view
-     * @param primaryColorsId
+     * @param primaryColor
      */
-    @ReactProp(name="primaryColorsId",defaultInt = 0)
-    public void setPrimaryColorsId(ReactSmartRefreshLayout view, int primaryColorsId){
-        if(primaryColorsId!=0){
-            view.setPrimaryColors(primaryColorsId);
+    @ReactProp(name="primaryColor")
+    public void setPrimaryColorsId(ReactSmartRefreshLayout view, String primaryColor){
+        if(!primaryColor.equals("")){
+            view.setPrimaryColors(Color.parseColor(primaryColor));
         }else{
             view.setPrimaryColorsId(android.R.color.white);
         }
@@ -457,7 +459,13 @@ public class SmartRefreshLayoutManager extends ViewGroupManager<ReactSmartRefres
 
             @Override
             public void onFooterMoving(RefreshFooter footer, boolean isDragging, float percent, int offset, int footerHeight, int maxDragHeight) {
-
+                WritableMap event = new WritableNativeMap();
+                event.putBoolean("isDragging",isDragging);
+                event.putInt("offset",offset);
+                event.putInt("footerHeight",footerHeight);
+                event.putInt("maxDragHeight",maxDragHeight);
+                event.putDouble("percent", percent);
+                sendEvent(view,Events.onFooterMoving.value(),event);
             }
 
             @Override

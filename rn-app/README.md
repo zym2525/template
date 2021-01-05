@@ -1,0 +1,1 @@
+react-native-sticky-parallax-header 一个视察滚动库

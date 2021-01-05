@@ -6,7 +6,9 @@ public enum Events {
 
     onRefresh(2),
 
-    onLoadMore(3);
+    onLoadMore(3),
+
+    onFooterMoving(4);
 
     private int type = 1;
 
