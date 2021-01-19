@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Animated, Text } from 'react-native';
+import { View, FlatList, Animated, Text, UIManager } from 'react-native';
 import { StickyItem, SmartRefreshLayout } from '@/components'
 
 class StickyDemo extends Component {
@@ -17,6 +17,7 @@ class StickyDemo extends Component {
     }
 
     render() {
+        console.log(this.state.scrollY);
         return (
             <Animated.ScrollView
                 refreshControl={<SmartRefreshLayout

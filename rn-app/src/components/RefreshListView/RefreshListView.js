@@ -15,6 +15,9 @@ export const RefreshState = {
     EmptyData: 5,
 }
 
+/**
+ * @deprecated use SmartRefreshLayout instead of
+ */
 class RefreshListView extends PureComponent {
     static propTypes = {
         footerRefreshingText: PropTypes.string,

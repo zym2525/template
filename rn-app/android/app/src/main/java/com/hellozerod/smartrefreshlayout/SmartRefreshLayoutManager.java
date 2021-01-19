@@ -119,6 +119,26 @@ public class SmartRefreshLayoutManager extends ViewGroupManager<ReactSmartRefres
     }
 
     /**
+     * 设置 Header 起始位置偏移量
+     * @param view
+     * @param headerInsetStart
+     */
+    @ReactProp(name="headerInsetStart",defaultInt = 0)
+    public void setHeaderInsetStart(ReactSmartRefreshLayout view,int headerInsetStart){
+        view.setHeaderInsetStart(headerInsetStart);
+    }
+
+    /**
+     * 设置 Footer 起始位置偏移量
+     * @param view
+     * @param footerInsetStart
+     */
+    @ReactProp(name="footerInsetStart",defaultInt = 0)
+    public void setFooterInsetStart(ReactSmartRefreshLayout view,int footerInsetStart){
+        view.setFooterInsetStart(footerInsetStart);
+    }
+
+    /**
      * 最大显示下拉高度/Header标准高度
      * @param view
      * @param headerMaxDragRate
@@ -136,6 +156,26 @@ public class SmartRefreshLayoutManager extends ViewGroupManager<ReactSmartRefres
     @ReactProp(name="footerMaxDragRate",defaultFloat = 2.0f)
     public void setFooterMaxDragRate(ReactSmartRefreshLayout view,float footerMaxDragRate){
         view.setFooterMaxDragRate(footerMaxDragRate);
+    }
+
+    /**
+     * 触发刷新距离 与 HeaderHeight 的比率
+     * @param view
+     * @param headerTriggerRate
+     */
+    @ReactProp(name="headerTriggerRate",defaultFloat = 1)
+    public void setHeaderTriggerRate(ReactSmartRefreshLayout view,float headerTriggerRate){
+        view.setHeaderTriggerRate(headerTriggerRate);
+    }
+
+    /**
+     * 触发加载距离 与 FooterHeight 的比率
+     * @param view
+     * @param footerTriggerRate
+     */
+    @ReactProp(name="footerTriggerRate",defaultFloat = 1)
+    public void setFooterTriggerRate(ReactSmartRefreshLayout view,float footerTriggerRate){
+        view.setFooterTriggerRate(footerTriggerRate);
     }
 
     /**

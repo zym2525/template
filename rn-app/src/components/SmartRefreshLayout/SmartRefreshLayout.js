@@ -33,6 +33,14 @@ class SmartRefreshLayout extends Component {
          */
         footerHeight: PropTypes.number,
         /**
+        * @param 设置 Header 起始位置偏移量
+        */
+        headerInsetStart: PropTypes.number,
+        /**
+        * @param 设置 Footer 起始位置偏移量
+        */
+        footerInsetStart: PropTypes.number,
+        /**
          * @param 最大显示下拉高度/Header标准高度
          */
         headerMaxDragRate: PropTypes.number,
@@ -40,6 +48,14 @@ class SmartRefreshLayout extends Component {
          * @param 最大显示下拉高度/Footer标准高度
          */
         footerMaxDragRate: PropTypes.number,
+        /**
+        * @param 触发刷新距离 与 HeaderHeight 的比率
+        */
+        headerTriggerRate: PropTypes.number,
+        /**
+        * @param 触发加载距离 与 FooterHeight 的比率
+        */
+        footerTriggerRate: PropTypes.number,
         /**
          * @param 是否启用下拉刷新功能
          */
@@ -92,7 +108,16 @@ class SmartRefreshLayout extends Component {
          * @param 是否启用越界拖动
          */
         enableOverScrollDrag: PropTypes.bool,
+        /**
+         * @param 上拉刷新回调
+         */
+        onRefresh: PropTypes.func,
+        /**
+         * @param 下拉加载回调
+         */
+        onLoadMore: PropTypes.func,
 
+        onStateChanged: PropTypes.func,
     }
 
     static defaultProps = {
@@ -100,8 +125,12 @@ class SmartRefreshLayout extends Component {
         reboundDuration: 300,
         headerHeight: 100,
         footerHeight: 100,
+        headerInsetStart: 0,
+        footerInsetStart: 0,
         headerMaxDragRate: 2,
         footerMaxDragRate: 2,
+        headerTriggerRate: 1,
+        footerTriggerRate: 1,
         enableRefresh: true,
         enableLoadMore: false,
         enableAutoLoadMore: true,

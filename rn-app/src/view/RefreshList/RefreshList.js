@@ -52,6 +52,9 @@ class RefreshList extends Component {
                     onLoadMore={this.onLoadMore.bind(this)}
                     ref={this.refreshList}
                     enableLoadMore
+                    footerMaxDragRate={1}
+                    // enableOverScrollDrag={false}
+                    enableOverScrollBounce={false}
                 // HeaderComponent={() => <BezierRadarHeader primaryColor='#59b8fa' />}
                 // enableRefresh={false}
                 >

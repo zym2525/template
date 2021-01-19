@@ -31,7 +31,7 @@ const isDebuggingInBrowser = __DEV__ && !!window.navigator.userAgent;
 
 const store = applyMiddleware(
     ...middlewares
-)(createStore)(reducers);
+)(createStore)(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 sagaMiddleware.run(rootSaga)
 
