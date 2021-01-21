@@ -31,13 +31,11 @@ const AjaxResponseBase = {
     __HJ: true,
 }
 
-function ajaxResponse({ data }) {
-    return {
-        ...AjaxResponseBase,
-        result: data,
-        success: true
-    }
-}
+const ajaxResponse = ({ data }) => ({
+    ...AjaxResponseBase,
+    result: data,
+    success: true
+})
 
 module.exports = {
     param2Obj,

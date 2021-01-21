@@ -8,20 +8,16 @@ module.exports = [
         url: '/api/Account/authenticate',
         type: 'post',
         response: config => {
-
-            return {
-                code: 1,
-                data: ajaxResponse(Mock.mock({
-                    'items|3': [{
-                        id: '@id',
-                        title: '@sentence(10, 20)',
-                        'status|1': ['published', 'draft', 'deleted'],
-                        author: 'name',
-                        display_time: '@datetime',
-                        pageviews: '@integer(300, 5000)'
-                    }]
-                }))
-            }
+            return ajaxResponse(Mock.mock({
+                'items|3': [{
+                    id: '@id',
+                    title: '@sentence(10, 20)',
+                    'status|1': ['published', 'draft', 'deleted'],
+                    author: 'name',
+                    display_time: '@datetime',
+                    pageviews: '@integer(300, 5000)'
+                }]
+            }))
         }
     },
     {

@@ -1,5 +1,5 @@
 import store from '@/store'
-import { DeviceType } from '@/constants'
+import { DeviceType, ScreenBreakPoints } from '@/constants'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
@@ -26,9 +26,9 @@ export default {
         $_createDeviceType() {
             const rect = body.getBoundingClientRect();
             const width = rect.width;
-            if (width >= 992) {
+            if (width >= ScreenBreakPoints.md) {
                 return DeviceType.Desktop;
-            } else if (width >= 768) {
+            } else if (width >= ScreenBreakPoints.sm) {
                 return DeviceType.Pad;
             } else {
                 return DeviceType.Phone;
