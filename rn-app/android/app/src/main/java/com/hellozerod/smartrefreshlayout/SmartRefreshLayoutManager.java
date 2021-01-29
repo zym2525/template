@@ -1,6 +1,7 @@
 package com.hellozerod.smartrefreshlayout;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import com.facebook.infer.annotation.Assertions;
@@ -276,6 +277,16 @@ public class SmartRefreshLayoutManager extends ViewGroupManager<ReactSmartRefres
     @ReactProp(name="enableLoadMoreWhenContentNotFull",defaultBoolean = true)
     public void setEnableLoadMoreWhenContentNotFull(ReactSmartRefreshLayout view,Boolean enableLoadMoreWhenContentNotFull){
         view.setEnableLoadMoreWhenContentNotFull(enableLoadMoreWhenContentNotFull);
+    }
+
+    /**
+     * 是否在全部加载结束之后Footer跟随内容
+     * @param view
+     * @param enableFooterFollowWhenNoMoreData
+     */
+    @ReactProp(name="enableFooterFollowWhenNoMoreData",defaultBoolean = false)
+    public void setEnableFooterFollowWhenNoMoreData(ReactSmartRefreshLayout view,Boolean enableFooterFollowWhenNoMoreData){
+        view.setEnableFooterFollowWhenNoMoreData(enableFooterFollowWhenNoMoreData);
     }
 
     /**

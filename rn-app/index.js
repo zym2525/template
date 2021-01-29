@@ -10,6 +10,7 @@ import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-e
 import { exceptionJshandler, exceptionNativehandler } from '@/utils/exceptionHandler'
 import Storge from '@/services/storage'
 import { enableScreens } from 'react-native-screens'
+// import StorybookUIRoot from './storybook'
 
 enableScreens();
 setJSExceptionHandler(exceptionJshandler, true);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { SmartRefreshLayout, BezierRadarHeader } from '@/components'
+import { SmartRefreshLayout, BezierRadarHeader, ClassicsHeader } from '@/components'
 
 class RefreshList extends Component {
     constructor(props) {
@@ -49,13 +49,11 @@ class RefreshList extends Component {
                 <SmartRefreshLayout
                     style={{ flex: 1, }}
                     onRefresh={this.onRefresh.bind(this)}
-                    onLoadMore={this.onLoadMore.bind(this)}
+                    // onLoadMore={this.onLoadMore.bind(this)}
+                    enableAutoLoadMore={false}
                     ref={this.refreshList}
                     enableLoadMore
-                    footerMaxDragRate={1}
-                    // enableOverScrollDrag={false}
-                    enableOverScrollBounce={false}
-                // HeaderComponent={() => <BezierRadarHeader primaryColor='#59b8fa' />}
+                    HeaderComponent={() => <ClassicsHeader accentColor='#ffffff' spinnerStyle={ClassicsHeader.SpinnerStyle.Scale} primaryColor='#59b8fa' />}
                 // enableRefresh={false}
                 >
                     <FlatList

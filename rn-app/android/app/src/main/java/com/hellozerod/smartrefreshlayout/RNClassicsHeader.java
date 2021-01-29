@@ -6,6 +6,7 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.constant.SpinnerStyle;
 
 import androidx.annotation.NonNull;
 
@@ -40,6 +41,16 @@ public class RNClassicsHeader extends SimpleViewManager<ClassicsHeader> {
     @ReactProp(name = "accentColor")
     public void setAccentColor(ClassicsHeader view,String accentColor){
         view.setAccentColor(Color.parseColor(accentColor));
+    }
+
+    /**
+     * 设置移动样式
+     * @param view
+     * @param position
+     */
+    @ReactProp(name = "spinnerStyle",defaultInt = 0)
+    public void setSpinnerStyle(ClassicsHeader view,int position){
+        view.setSpinnerStyle(SpinnerStyle.values[position]);
     }
 
 }

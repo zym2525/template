@@ -17,7 +17,6 @@ class StickyDemo extends Component {
     }
 
     render() {
-        console.log(this.state.scrollY);
         return (
             <Animated.ScrollView
                 refreshControl={<SmartRefreshLayout

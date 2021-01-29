@@ -66,6 +66,7 @@ class SmartRefreshLayout extends Component {
         enableLoadMore: PropTypes.bool,
         /**
          * @param 是否启用列表惯性滑动到底部时自动加载更多
+         * @description 如果是true 滑动到底部时会直接触发onLoadeMore 如果是false 需要手动下滑到释放加载更多
          */
         enableAutoLoadMore: PropTypes.bool,
         /**
@@ -96,6 +97,10 @@ class SmartRefreshLayout extends Component {
          * @param 是否在列表不满一页时候开启上拉加载功能
          */
         enableLoadMoreWhenContentNotFull: PropTypes.bool,
+        /**
+         * @param 是否在全部加载结束之后Footer跟随内容
+         */
+        enableFooterFollowWhenNoMoreData: PropTypes.bool,
         /**
          * @param 是否在刷新的时候禁止列表的操作
          */
@@ -141,6 +146,7 @@ class SmartRefreshLayout extends Component {
         enableHeaderTranslationContent: true,
         enableFooterTranslationContent: true,
         enableLoadMoreWhenContentNotFull: true,
+        enableFooterFollowWhenNoMoreData: false,
         disableContentWhenRefresh: true,
         disableContentWhenLoading: true,
         enableOverScrollDrag: true,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, StatusBar, FlatList, ScrollView } from 'react-native';
 import { Text, widthLoading, SmartRefreshLayout, BezierRadarHeader } from '@/components'
 import StyleConfig from '@/style/config'
-import _compose from 'recompact/compose';
+import { compose } from '@/utils/common'
 
 //redux
 import { connect } from 'react-redux'
@@ -23,6 +23,10 @@ const List = [
     {
         router: 'ParallaxHeader',
         name: 'go to ParallaxHeader'
+    },
+    {
+        router: 'BottomSheetIndex',
+        name: 'go to BottomSheet'
     }
 ]
 
