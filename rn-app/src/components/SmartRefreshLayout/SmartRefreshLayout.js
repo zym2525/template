@@ -1,15 +1,39 @@
 import React, { Component } from 'react';
 import { requireNativeComponent, View, UIManager, findNodeHandle, DeviceEventEmitter, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
+import ClassicsFooter from './ClassicsFooter'
 
 export const RefreshEventType = {
     OnStateChanged: 1,
     OnRefresh: 2,
     OnLoadMore: 3,
     onFooterMoving: 4,
+    onHeaderMoving: 5,
+}
+
+const RefreshState = {
+    None: 'None',
+    PullDownToRefresh: 'PullDownToRefresh',
+    PullDownCanceled: 'PullDownCanceled',
+    ReleaseToRefresh: 'ReleaseToRefresh',
+    ReleaseToTwoLevel: 'ReleaseToTwoLevel',
+    RefreshReleased: 'RefreshReleased',
+    Refreshing: 'Refreshing',
+    RefreshFinish: 'RefreshFinish',
+    PullUpToLoad: 'PullUpToLoad',
+    PullUpCanceled: 'PullUpCanceled',
+    ReleaseToLoad: 'ReleaseToLoad',
+    TwoLevelReleased: 'TwoLevelReleased',
+    LoadReleased: 'LoadReleased',
+    Loading: 'Loading',
+    LoadFinish: 'LoadFinish',
+    TwoLevel: 'TwoLevel',
+    TwoLevelFinish: 'TwoLevelFinish',
 }
 
 class SmartRefreshLayout extends Component {
+
+    static RefreshState = RefreshState;
 
     static propTypes = {
         /**
@@ -163,6 +187,9 @@ class SmartRefreshLayout extends Component {
 
     onChange(event) {
         // console.log('event: ', event.nativeEvent);
+        // if (event.nativeEvent.type == 8) {
+        //     console.log('event222: ', event.nativeEvent);
+        // }
         switch (event.nativeEvent.type) {
             case RefreshEventType.OnStateChanged:
                 this.onStateChanged(event.nativeEvent.event);
@@ -175,6 +202,9 @@ class SmartRefreshLayout extends Component {
                 break;
             case RefreshEventType.onFooterMoving:
                 this._handeOnFooterMoving(event.nativeEvent.event);
+                break;
+            case RefreshEventType.onHeaderMoving:
+                this._handeOnHeaderMoving(event.nativeEvent.event);
                 break;
             default:
                 break;
@@ -209,7 +239,13 @@ class SmartRefreshLayout extends Component {
         onFooterMoving && onFooterMoving(data);
     }
 
+    _handeOnHeaderMoving(data) {
+        let { onHeaderMoving } = this.props;
+        onHeaderMoving && onHeaderMoving(data);
+    }
+
     onStateChanged(event) {
+        // console.log('event: ', event);
         let { onStateChanged } = this.props;
         this.setState({
             refreshState: event.newState
@@ -325,7 +361,7 @@ class SmartRefreshLayout extends Component {
             let footer = FooterComponent();
             if (React.isValidElement(footer)) return footer;
         } else {
-            return <View collapsable={false}></View>
+            return <ClassicsFooter accentColor='#333333' /> //<View collapsable={false}></View>
         }
     }
 

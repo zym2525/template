@@ -7,7 +7,7 @@ import { setPageTitle } from '@/utils'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/', '/login'] // no redirect whitelist
+const whiteList = ['/', '/login', '/home'] // no redirect whitelist
 
 router.beforeEach(async (to, from, next) => {
     console.log('to: ', to);

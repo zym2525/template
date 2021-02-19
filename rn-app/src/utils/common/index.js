@@ -28,7 +28,8 @@ export {
     webViewSetSize,
     setScrollSize,
     getScrollSize,
-    scale
+    scale,
+    px2dp
 } from './scaleSize.js'
 
 export * from './toast'

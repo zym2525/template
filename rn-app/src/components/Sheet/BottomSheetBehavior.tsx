@@ -5,6 +5,7 @@ import {
   PanGestureHandler,
   TapGestureHandler,
   State as GestureState,
+  PanGestureHandlerGestureEvent
 } from 'react-native-gesture-handler'
 
 type Props = {
@@ -362,8 +363,6 @@ export default class BottomSheetBehavior extends React.Component<Props, State> {
       middlesOfSnapPoints.push(tuple)
     }
 
-    console.log('middlesOfSnapPoints: ', middlesOfSnapPoints);
-
     const masterOffseted = new Value(init)
 
     // destination point is a approximation of movement if finger released
@@ -410,7 +409,7 @@ export default class BottomSheetBehavior extends React.Component<Props, State> {
           )
         )
     // current snap point desired
-    this.snapPoint = currentSnapPoint()
+    this.snapPoint = debug('snapPoint', currentSnapPoint())
 
     if (props.enabledBottomClamp) {
       this.clampingValue.setValue(snapPoints[snapPoints.length - 1])
@@ -422,14 +421,11 @@ export default class BottomSheetBehavior extends React.Component<Props, State> {
     const wasRun: Animated.Value<number> = new Value(0)
     this.translateMaster = block([
       cond(
-        /**
-         * 手指松开或者没有拖动
-         */
-        or(
-          eq(this.panMasterState, GestureState.END),
+        debug('cond', or(
+          eq(debug('this.panMasterState', this.panMasterState), GestureState.END),
           eq(this.panMasterState, GestureState.CANCELLED),
           eq(this.panMasterState, GestureState.FAILED)
-        ),
+        )),
         [
           set(prevMasterDrag, 0),
           cond(
@@ -456,7 +452,7 @@ export default class BottomSheetBehavior extends React.Component<Props, State> {
             ]
           ),
         ],
-        [//在拖动是时候
+        [
           stopClock(masterClock),
           set(this.preventDecaying, 1),
           set(

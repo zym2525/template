@@ -1,4 +1,4 @@
-package com.hellozerod.smartrefreshlayout;
+package com.hellozerod.smartrefreshlayout.manager;
 
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;

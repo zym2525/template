@@ -36,3 +36,7 @@ export function setScrollSize(value) {
 export function getScrollSize(value) {
     return value / pixelRatio
 }
+
+export function px2dp(value) {
+    return value / pixelRatio
+}

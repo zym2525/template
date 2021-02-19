@@ -1,25 +1,24 @@
-package com.hellozerod.smartrefreshlayout;
+package com.hellozerod.smartrefreshlayout.manager;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.common.MapBuilder;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.scwang.smart.refresh.footer.ClassicsFooter;
-import com.scwang.smart.refresh.header.ClassicsHeader;
-import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.hellozerod.smartrefreshlayout.component.ClassicsFooter;
+import com.hellozerod.smartrefreshlayout.component.ClassicsHeader;
+import com.hellozerod.smartrefreshlayout.enums.Events;
+import com.hellozerod.smartrefreshlayout.component.ReactSmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshFooter;
 import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -28,7 +27,7 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnMultiListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -437,8 +436,15 @@ public class SmartRefreshLayoutManager extends ViewGroupManager<ReactSmartRefres
                     parent.setRefreshFooter(footer);
                 }
                 break;
-            default:break;
+            default:
+//                parent.addView(child,0);
+                break;
         }
+    }
+
+    @Override
+    public void addViews(ReactSmartRefreshLayout parent, List<View> views) {
+        super.addViews(parent, views);
     }
 
     @Override
@@ -475,7 +481,7 @@ public class SmartRefreshLayoutManager extends ViewGroupManager<ReactSmartRefres
                 WritableMap event = Arguments.createMap();
                 event.putString("oldState", oldState.toString());
                 event.putString("newState", newState.toString());
-                sendEvent(view,Events.onStateChanged.value(),event);
+                sendEvent(view, Events.onStateChanged.value(),event);
             }
 
             @Override
@@ -490,7 +496,13 @@ public class SmartRefreshLayoutManager extends ViewGroupManager<ReactSmartRefres
 
             @Override
             public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
-
+                WritableMap event = new WritableNativeMap();
+                event.putBoolean("isDragging",isDragging);
+                event.putInt("offset",offset);
+                event.putInt("headerHeight",headerHeight);
+                event.putInt("maxDragHeight",maxDragHeight);
+                event.putDouble("percent", percent);
+                sendEvent(view,Events.onHeaderMoving.value(),event);
             }
 
             @Override

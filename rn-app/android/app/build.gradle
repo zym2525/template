@@ -235,6 +235,7 @@ dependencies {
     implementation  'com.scwang.smart:refresh-header-classics:2.0.1'
     implementation  'com.scwang.smart:refresh-footer-classics:2.0.1'
     implementation  'com.scwang.smart:refresh-header-radar:2.0.1'
+    implementation  'com.scwang.smart:refresh-header-two-level:2.0.3'
 }
 
 // Run this once to be able to run the application with BUCK

@@ -1,4 +1,4 @@
-package com.hellozerod.smartrefreshlayout;
+package com.hellozerod.smartrefreshlayout.component;
 
 import android.content.Context;
 import android.view.MotionEvent;

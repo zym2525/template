@@ -1,9 +1,6 @@
 /* 改变主题色变量 */
 $--color-primary: teal;
 
-/* 改变 icon 字体路径变量，必需 */
-$--font-path: "~element-ui/lib/theme-chalk/fonts";
-
 /* Break-point
 --------------------------*/
 $--sm: 768px !default;
@@ -43,4 +40,5 @@ $--breakpoints-spec: (
     "xl-only": "(min-width: #{$--xl})",
 );
 
-@import "~element-ui/packages/theme-chalk/src/index";
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: "~element-ui/lib/theme-chalk/fonts";

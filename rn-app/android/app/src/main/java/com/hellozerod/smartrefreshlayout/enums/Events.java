@@ -1,4 +1,4 @@
-package com.hellozerod.smartrefreshlayout;
+package com.hellozerod.smartrefreshlayout.enums;
 
 public enum Events {
 
@@ -7,6 +7,8 @@ public enum Events {
     onRefresh(2),
 
     onLoadMore(3),
+
+    onHeaderMoving(5),
 
     onFooterMoving(4);
 
