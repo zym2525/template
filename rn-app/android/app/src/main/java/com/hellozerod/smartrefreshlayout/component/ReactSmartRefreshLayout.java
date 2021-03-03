@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshKernel;
 
 public class ReactSmartRefreshLayout extends SmartRefreshLayout {
     private static final float DEFAULT_CIRCLE_TARGET = 64;

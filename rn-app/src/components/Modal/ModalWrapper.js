@@ -11,6 +11,7 @@ const ModalWrapper = ({ wrapperStyle, bodyStyle, onClose, children, render, ...r
     const [visible, setVisible] = useState(true);
 
     function onAnimationEnd(isVisible) {
+        console.log('isVisible: ', isVisible);
         if (!isVisible) {
             onClose && onClose();
         }

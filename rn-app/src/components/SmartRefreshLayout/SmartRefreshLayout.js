@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { requireNativeComponent, View, UIManager, findNodeHandle, DeviceEventEmitter, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import ClassicsFooter from './ClassicsFooter'
+import ClassicsHeader from './ClassicsHeader'
 
 export const RefreshEventType = {
     OnStateChanged: 1,
@@ -351,7 +352,7 @@ class SmartRefreshLayout extends Component {
             let header = HeaderComponent();
             if (React.isValidElement(header)) return header;
         } else {
-            return <View collapsable={false}></View>
+            return <ClassicsHeader accentColor='#ffffff' spinnerStyle={ClassicsHeader.SpinnerStyle.Translate} /> //<View collapsable={false}></View>
         }
     }
 
@@ -361,7 +362,7 @@ class SmartRefreshLayout extends Component {
             let footer = FooterComponent();
             if (React.isValidElement(footer)) return footer;
         } else {
-            return <ClassicsFooter accentColor='#333333' /> //<View collapsable={false}></View>
+            return <ClassicsFooter accentColor='#ffffff' primaryColor='#59b8fa' spinnerStyle={ClassicsHeader.SpinnerStyle.Scale} /> //<View collapsable={false}></View>
         }
     }
 

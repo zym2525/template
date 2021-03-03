@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions, StatusBar, Image, ImageBackground, ScrollView } from 'react-native';
-import { SmartRefreshLayout, BezierRadarHeader, ClassicsHeader } from '@/components'
+import { SmartRefreshLayout, BezierRadarHeader, ClassicsHeader, ClassicsFooter } from '@/components'
 import Animated, { debug, Value, clockRunning, startClock, timing, set, cond, Clock, event, sub, min, Easing, block, stopClock, divide, add, max, interpolate, Extrapolate } from 'react-native-reanimated'
 import { px2dp } from './../../utils/common/scaleSize';
 import { PanGestureHandler, State, TapGestureHandler } from 'react-native-gesture-handler';
@@ -116,7 +116,7 @@ class RefreshList extends Component {
                         ref={this.refreshList}
                         enableLoadMore
                         primaryColor='#59b8fa'
-                        HeaderComponent={() => <ClassicsHeader accentColor='#ffffff' spinnerStyle={ClassicsHeader.SpinnerStyle.Scale} />}
+                    // HeaderComponent={() => <ClassicsHeader accentColor='#ffffff' spinnerStyle={ClassicsHeader.SpinnerStyle.FixedBehind} />}
                     // enableRefresh={false}
                     >
                         <FlatList

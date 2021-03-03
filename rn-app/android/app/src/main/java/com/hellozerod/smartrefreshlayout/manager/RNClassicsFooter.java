@@ -5,6 +5,7 @@ import android.graphics.Color;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.hellozerod.R;
 import com.hellozerod.smartrefreshlayout.component.ClassicsFooter;
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle;
 
@@ -30,7 +31,9 @@ public class RNClassicsFooter extends SimpleViewManager<ClassicsFooter> {
      */
     @ReactProp(name = "primaryColor")
     public void setPrimaryColor(ClassicsFooter view, String primaryColor){
-        view.setPrimaryColor(Color.parseColor(primaryColor));
+        if(!primaryColor.equals("")){
+            view.setPrimaryColor(Color.parseColor(primaryColor));
+        }
     }
 
     /**
@@ -40,8 +43,10 @@ public class RNClassicsFooter extends SimpleViewManager<ClassicsFooter> {
      */
     @ReactProp(name = "accentColor")
     public void setAccentColor(ClassicsFooter view,String accentColor){
-        view.setProgressResource(android.R.drawable.stat_notify_sync);
-        view.setAccentColor(Color.parseColor(accentColor));
+//        view.setProgressResource(R.drawable.animation_loading_rotate); //android.R.drawable.stat_notify_sync
+        if(!accentColor.equals("")){
+            view.setAccentColor(Color.parseColor(accentColor));
+        }
     }
 
     /**

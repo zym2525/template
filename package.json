@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "post-commit": "exec < /dev/tty&& node scripts/check-version.js",
-    "update": "git tag -a 1.0.5 && git push origin 1.0.5"
+    "update": "git tag -a 1.0.5 && git push origin 1.0.5",
+    "release": "dotenv -e .releaseEnv release-it --"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,10 @@
     "chalk": "^4.1.0",
     "child_process": "^1.0.2",
     "inquirer": "^7.2.0"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^2.0.1",
+    "dotenv-cli": "^4.0.0",
+    "release-it": "^14.4.1"
   }
 }

@@ -230,10 +230,20 @@ dependencies {
 
     implementation 'com.github.dfqin:grantor:2.5'
 
+    // 如果你需要支持GIF动图
+    implementation 'com.facebook.fresco:animated-gif:2.0.0'
+
+    // 如果你需要支持WebP格式，包括WebP动图
+    implementation 'com.facebook.fresco:animated-webp:2.1.0'
+    implementation 'com.facebook.fresco:webpsupport:2.0.0'
+
+    // 如果只需要支持WebP格式而不需要动图
+    implementation 'com.facebook.fresco:webpsupport:2.0.0'
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'
-    implementation  'com.scwang.smart:refresh-header-classics:2.0.1'
-    implementation  'com.scwang.smart:refresh-footer-classics:2.0.1'
+    implementation  'com.scwang.smart:refresh-header-classics:2.0.3'
+    implementation  'com.scwang.smart:refresh-footer-classics:2.0.3'
     implementation  'com.scwang.smart:refresh-header-radar:2.0.1'
     implementation  'com.scwang.smart:refresh-header-two-level:2.0.3'
 }

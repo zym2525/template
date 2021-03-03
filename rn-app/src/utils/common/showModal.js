@@ -1,4 +1,5 @@
 import React from 'react';
+// import Portal from '@/components/Portal'
 import { Portal } from '@ant-design/react-native'
 
 export function showModal(node) {

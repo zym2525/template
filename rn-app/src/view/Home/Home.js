@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, StatusBar, FlatList, ScrollView } from 'react-native';
 import { Text, widthLoading, SmartRefreshLayout, BezierRadarHeader } from '@/components'
 import StyleConfig from '@/style/config'
-import { compose } from '@/utils/common'
+import ModalWrapper from '@/components/Modal/ModalWrapper'
 
 //redux
 import { connect } from 'react-redux'
@@ -10,6 +10,17 @@ import { bindActionCreators } from 'redux'
 import * as userActions from '@/actions/user'
 import * as userService from '@/services/userService'
 
+const TestModal = ({ onClose }) => {
+    return <ModalWrapper
+        onClose={onClose}
+        render={() =>
+            <Text style={{ fontSize: 40 }}>TestModalTestModalTestModalTestModal</Text>
+        }
+
+    />
+}
+
+TestModal.displayName = 'TestModal'
 
 const List = [
     {
@@ -45,7 +56,6 @@ class Home extends Component {
 
         // let r1 = await userService.testGet({})
         // console.log('r1: ', r1);
-
     }
 
 

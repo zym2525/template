@@ -9,8 +9,12 @@ import android.view.View;
 import com.hellozerod.R;
 import com.scwang.smart.drawable.ProgressDrawable;
 import com.scwang.smart.refresh.classics.ArrowDrawable;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.constant.RefreshState;
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle;
 import com.scwang.smart.refresh.layout.util.SmartUtil;
+
+import androidx.annotation.NonNull;
 
 public class ClassicsFooter extends com.scwang.smart.refresh.footer.ClassicsFooter {
 
@@ -137,8 +141,6 @@ public class ClassicsFooter extends com.scwang.smart.refresh.footer.ClassicsFoot
             progressView.setVisibility(GONE);
         }
     }
-
-    //</editor-fold>
 
 }
 

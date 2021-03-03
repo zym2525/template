@@ -30,7 +30,7 @@
         android:layout_toLeftOf="@+id/srl_classics_title"
         android:layout_toStartOf="@+id/srl_classics_title"
         android:contentDescription="@android:string/untitled"
-        tools:tint="#666"
+        tools:tint="#666666"
         tools:src="@android:drawable/stat_notify_sync"/>
 
     <TextView
