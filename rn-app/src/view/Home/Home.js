@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActions from '@/actions/user'
 import * as userService from '@/services/userService'
+import { showModal } from './../../utils/common/showModal';
 
 const TestModal = ({ onClose }) => {
     return <ModalWrapper
@@ -56,6 +57,7 @@ class Home extends Component {
 
         // let r1 = await userService.testGet({})
         // console.log('r1: ', r1);
+        // showModal(<TestModal />)
     }
 
 
@@ -72,6 +74,7 @@ class Home extends Component {
                         <Text style={styles.listItem} onPress={() => navigation.navigate(item.router)}>{item.name}</Text>
                     }
                 />
+                {/* <TestModal /> */}
             </View>
         );
     }

@@ -6,11 +6,11 @@ import { BounceLayout } from '@/components'
 const BounceLayoutE = () => {
 
     const [data, setData] = React.useState([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
-    const list = React.useRef();
+    const list = React.useRef(null);
 
     return (
         <BounceLayout waitForRef={list}>
-            {/* <FlatList
+            <FlatList
                 ref={list}
                 // refreshControl={<BounceLayout />}
                 style={{ flex: 1 }}
@@ -25,7 +25,7 @@ const BounceLayoutE = () => {
                         fontSize: 28,
                     }}> item {index + 1}</Text>
                 }
-            /> */}
+            />
         </BounceLayout>
     )
 }

@@ -29,7 +29,8 @@ const {
     sub,
     decay,
     timing,
-    or
+    or,
+    onChange
 } = Animated;
 
 const EasingConfig = {
@@ -140,12 +141,13 @@ const BounceLayout = ({
     ]);
 
     /**
-     * 1 向下 0 向上
+     * 1 向下拉 0 向上拉
      */
     const positive = greaterOrEq(debug('velocityY', velocityY), 0);
+
     const dragYWithLimit = cond(
         // debug('positive', or(positive, greaterThan(velocityY, -0.3))),
-        cond(defined(transY), greaterThan(transY, 0), positive),
+        cond(defined(transY), greaterThan(transY, 0), debug("positive", positive)),
         min(headerHeight * headerMaxDragRate, debug('dragYWithRate', dragYWithRate)),
         max(-footerHeight * footerMaxDragRate, dragYWithRate)
     );
@@ -177,6 +179,10 @@ const BounceLayout = ({
         ),
 
     ])
+    // const enabled = cond(
+    //     positive,
+
+    // )
 
     return (
         <View style={[styles.wrapper, style]}>
@@ -185,7 +191,9 @@ const BounceLayout = ({
                 minDist={10}
                 onGestureEvent={_onGestureEvent}
                 onHandlerStateChange={_onGestureEvent}
-            // waitFor={contentRef}
+                enabled
+                waitFor={waitForRef}
+                activeOffsetY={[-10, 10]}
             // simultaneousHandlers={waitForRef}
             >
                 <Animated.View
@@ -201,6 +209,9 @@ const BounceLayout = ({
                     {children}
                 </Animated.View>
             </PanGestureHandler>
+            <Animated.Code
+                exec={onChange(positive, [debug("positive", positive)])}
+            />
         </View>
     )
 }
