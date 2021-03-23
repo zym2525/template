@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, StatusBar, FlatList, ScrollView } from 'react-native';
-import { Text, widthLoading, BezierRadarHeader } from '@/components'
+import { Text, widthLoading, BezierRadarHeader, SmartRefreshLayout } from '@/components'
 import StyleConfig from '@/style/config'
 import ModalWrapper from '@/components/Modal/ModalWrapper'
 
