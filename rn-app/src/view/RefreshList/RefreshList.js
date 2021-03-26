@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, StyleSheet, Dimensions, StatusBar, Image, ImageBackground, ScrollView } from 'react-native';
-import { SmartRefreshLayout, BezierRadarHeader, ClassicsHeader, ClassicsFooter } from '@/components'
+import { SmartRefreshLayout, BezierRadarHeader, ClassicsHeader, ClassicsFooter } from '@zero-d/rn-components'
 import Animated, { debug, Value, clockRunning, startClock, timing, set, cond, Clock, event, sub, min, Easing, block, stopClock, divide, add, max, interpolate, Extrapolate } from 'react-native-reanimated'
 import { px2dp } from './../../utils/common/scaleSize';
 import { PanGestureHandler, State, TapGestureHandler } from 'react-native-gesture-handler';

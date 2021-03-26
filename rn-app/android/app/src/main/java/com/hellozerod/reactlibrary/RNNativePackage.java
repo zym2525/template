@@ -5,11 +5,6 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.hellozerod.smartrefreshlayout.manager.RNClassicsFooter;
-import com.hellozerod.smartrefreshlayout.manager.RNClassicsHeader;
-import com.hellozerod.smartrefreshlayout.manager.RNRadarHeaderManager;
-import com.hellozerod.smartrefreshlayout.manager.RNTwoLevelHeaderManager;
-import com.hellozerod.smartrefreshlayout.manager.SmartRefreshLayoutManager;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,9 +15,6 @@ public class RNNativePackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Arrays.asList(new NativeModule[]{
                 // Modules from third-party
-                new HttpCacheModule(reactContext),
-                new OrientationModule(reactContext),
-                new RNAliyunOssModule(reactContext),
                 new RNConfigModule(reactContext)
         });
     }
@@ -34,11 +26,7 @@ public class RNNativePackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-                new SmartRefreshLayoutManager(),
-                new RNRadarHeaderManager(),
-                new RNClassicsHeader(),
-                new RNTwoLevelHeaderManager(),
-                new RNClassicsFooter()
+
         );
     }
 }

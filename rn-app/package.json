@@ -19,6 +19,7 @@
     "@react-native-community/masked-view": "^0.1.8",
     "@react-native-community/netinfo": "^5.7.0",
     "@react-native-community/viewpager": "^4.0.0",
+    "@zero-d/rn-components": "0.0.4",
     "axios": "^0.19.2",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",

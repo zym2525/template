@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, FlatList, Animated, Text, UIManager } from 'react-native';
-import { StickyItem, SmartRefreshLayout } from '@/components'
+import { StickyItem } from '@/components'
+import { SmartRefreshLayout } from '@zero-d/rn-components'
 
 class StickyDemo extends Component {
     constructor(props) {
