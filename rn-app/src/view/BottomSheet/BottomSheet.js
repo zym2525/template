@@ -7,7 +7,7 @@ import {
     View,
     TextInput,
 } from 'react-native'
-import BottomSheet from '@/components/Sheet/BottomSheetBehavior'
+import { BottomSheetBehavior as BottomSheet } from '@zero-d/rn-components'
 
 export default class Example extends React.Component {
 

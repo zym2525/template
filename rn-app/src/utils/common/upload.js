@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, ActivityIndicator } from 'react-native';
-import AliyunOSS from '../AliyunOSS'
+import { AliyunOSS } from '@zero-d/rn-components'
 import { downloadUrl } from '@/constants/oss'
 import { toast } from './toast';
 import uuid from 'uuid';

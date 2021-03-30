@@ -5,6 +5,7 @@ import { Store } from './store/store';
 import AppContainer from '@/routers/rootNavigator'
 import { Provider as AntProvider } from '@ant-design/react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Provider as ZeroDProvider } from '@zero-d/rn-components'
 
 const persistenceKey = "persistenceKey"
 const persistNavigationState = async (navState) => {
@@ -35,9 +36,11 @@ export default class App extends Component {
         return (
             <Provider store={Store}>
                 <AntProvider>
+                    {/* <ZeroDProvider> */}
                     <AppContainer
                     // {...getPersistenceFunctions()}
                     />
+                    {/* </ZeroDProvider> */}
                 </AntProvider>
             </Provider>
         );

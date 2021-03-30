@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View, Dimensions, StatusBar } from 'react-native'
-import BottomSheet from '@/components/Sheet/BottomSheetBehavior'
+import { BottomSheetBehavior as BottomSheet } from '@zero-d/rn-components'
 import Animated, { debug, interpolate, Extrapolate, max, multiply, add } from 'react-native-reanimated'
 
 export default class Example extends React.Component {

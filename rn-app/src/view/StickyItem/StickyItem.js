@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, FlatList, Animated, Text, UIManager } from 'react-native';
-import { StickyItem } from '@/components'
-import { SmartRefreshLayout } from '@zero-d/rn-components'
+import { View, FlatList, Text, UIManager } from 'react-native';
+import { SmartRefreshLayout, StickyItem } from '@zero-d/rn-components'
+import Animated from 'react-native-reanimated'
 
 class StickyDemo extends Component {
     constructor(props) {
@@ -25,7 +25,7 @@ class StickyDemo extends Component {
                     onFooterMoving={this.onFooterMoving.bind(this)}
                     footerMaxDragRate={0}
                 />}
-                stickyHeaderIndices={6}
+                stickyHeaderIndices={[6]}
                 style={{ flex: 1 }}
                 onScroll={
                     Animated.event(
