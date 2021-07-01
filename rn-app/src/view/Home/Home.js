@@ -34,10 +34,6 @@ const List = [
         name: 'go to StickyItem'
     },
     {
-        router: 'ParallaxHeader',
-        name: 'go to ParallaxHeader'
-    },
-    {
         router: 'BottomSheetIndex',
         name: 'go to BottomSheet'
     }

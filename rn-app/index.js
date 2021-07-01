@@ -10,7 +10,14 @@ import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-e
 import { exceptionJshandler, exceptionNativehandler } from '@/utils/exceptionHandler'
 import Storge from '@/services/storage'
 import { enableScreens } from 'react-native-screens'
+import { setConfig } from '@zero-d/rn-components'
 // import StorybookUIRoot from './storybook'
+
+setConfig({
+    portraitWidth: 750,
+    landScapeWidth: 1334,
+    defaultPixel: 2
+})
 
 enableScreens();
 setJSExceptionHandler(exceptionJshandler, true);

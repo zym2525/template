@@ -1,16 +1,15 @@
 import {
     Dimensions,
     Platform,
-    NativeModules
+    NativeModules,
+    StatusBar
 } from 'react-native';
 
 const { height, width } = Dimensions.get('window');
 
-const { StatusBarManager } = NativeModules;
-
-console.log(height, width, Dimensions.get('screen'), StatusBarManager.HEIGHT)
+console.log(height, width, Dimensions.get('screen'), StatusBar.currentHeight)
 export default StyleConfig = {
     screen_width: width,
     screen_height: height,
-    status_height: Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT
+    status_height: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight
 };

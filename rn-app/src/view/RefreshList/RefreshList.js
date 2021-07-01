@@ -7,14 +7,6 @@ import { PanGestureHandler, State, TapGestureHandler } from 'react-native-gestur
 
 class RefreshList extends Component {
 
-    static navigationOptions = ({ navigation }) => ({
-        headerShown: false
-    });
-
-
-
-
-
     constructor(props) {
         super(props);
         this.state = {

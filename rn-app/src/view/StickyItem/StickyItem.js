@@ -13,7 +13,8 @@ class StickyDemo extends Component {
         };
     }
 
-    onFooterMoving({ offset }) {
+    onFooterMoving({ nativeEvent: { offset } }) {
+        console.log('offset: ', offset);
         this.state.smartRefreshFooterOffset.setValue(offset / 2);
     }
 
