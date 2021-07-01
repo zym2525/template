@@ -21,7 +21,7 @@
     "@react-native-community/viewpager": "^4.0.0",
     "@zero-d/rn-components": "0.0.7",
     "axios": "^0.19.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "qs": "^6.9.4",
