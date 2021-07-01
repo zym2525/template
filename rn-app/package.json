@@ -43,7 +43,7 @@
     "react-native-storage": "^1.0.1",
     "react-native-svg": "^12.1.0",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-webview": "^9.1.4",
+    "react-native-webview": "^11.0.0",
     "react-navigation": "^4.3.7",
     "react-navigation-stack": "^2.3.11",
     "react-navigation-tabs": "^2.8.11",
