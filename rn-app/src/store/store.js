@@ -1,7 +1,5 @@
 'use strict';
 import { createStore, applyMiddleware } from 'redux';
-import reducers from '@/reducers';
-import { rootSaga } from '../sagas'
 import createSagaMiddleware from 'redux-saga'
 import { createLogger } from 'redux-logger'
 // import { handeSagaError } from '@/sagas/help'
