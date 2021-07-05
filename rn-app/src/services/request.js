@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { toast } from '@/utils/common';
-import * as UserActions from '@/actions/user';
+import * as userActions from '@/actions/user';
 import axios from 'axios';
 import qs from 'qs';
 import { SERVER_URL } from '@/constants/api'
@@ -21,8 +21,8 @@ const instance = axios.create({
  * 请求拦截器
  */
 instance.interceptors.request.use(async config => {
-	console.log('config: ', config);
-	let token = await UserActions.getToken();
+	// console.log('config: ', config);
+	let token = await userActions.getToken();
 	if (token) {
 		config.headers.Authorization = `Bearer ${token.access_token}`
 	}
@@ -37,7 +37,7 @@ instance.interceptors.request.use(async config => {
  * 响应拦截器
  */
 instance.interceptors.response.use(function (response) {
-	console.log('response: ', response);
+	// console.log('response: ', response);
 	// 对响应数据做点什么
 
 	return response;
@@ -62,7 +62,7 @@ export function get(uri, params = {}, resolve, reject) {
 }
 
 export function post(uri, params = {}, resolve, reject) {
-	return instance.post(uri, qs.stringify(params))
+	return instance.post(uri, params)
 		.then(res => {
 			return resolve ? resolve(res.data) : res.data
 		})

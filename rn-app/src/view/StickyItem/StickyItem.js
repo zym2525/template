@@ -58,7 +58,7 @@ class StickyDemo extends Component {
                 </StickyItem>
 
                 {
-                    new Array(20).fill('').map((item, index) =>
+                    new Array(60).fill('').map((item, index) =>
                         <Text key={index} style={{ fontSize: 20 }}>文字</Text>
                     )
                 }

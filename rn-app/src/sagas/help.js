@@ -1,30 +1,19 @@
 import { call, delay, put, race, all } from 'redux-saga/effects'
-import { ERROR_MESSAGE, LOADING } from '@/constants/actionTypes'
+import { ERROR_MESSAGE } from '@/constants/actionTypes'
 
 const PendTiming = 200;
 
 export function handeSagaError(store, messages) {
     console.log(messages[0].stack)
-    store.dispatch({ type: ERROR_MESSAGE, payload: messages[0].message })
+    store.dispatch({ type: 'common/error_message', payload: messages[0].message })
 }
 
 export function* customCall(...args) {
     try {
         return yield call(...args)
     } catch (error) {
-        yield put({ type: ERROR_MESSAGE, payload: error.message })
+        yield put({ type: 'common/error_message', payload: error.message })
         // return error
-    }
-}
-
-export function callWithFunc({ needPending, needLoading, pendingTiming } = { needPending: false, needLoading: false, pendingTiming: PendTiming }) {
-    console.log('needPending, needLoading, pendingTiming: ', needPending, needLoading, pendingTiming);
-    return function* (fn, ...args) {
-        if (needLoading) yield put({ type: LOADING, payload: true })
-        if (!needPending) pendingTiming = 0
-        const result = yield pending(fn, ...args)
-        yield put({ type: LOADING, payload: false })
-        return result;
     }
 }
 
@@ -39,9 +28,9 @@ export function* pending(fn, ...args) {
 
 export function* loading(fn, ...args) {
     console.log('loading')
-    yield put({ type: LOADING, payload: true })
+    yield put({ type: 'common/loading', payload: true })
     const result = yield fn(...args);
-    yield put({ type: LOADING, payload: false })
+    yield put({ type: 'common/loading', payload: false })
     return result;
 }
 

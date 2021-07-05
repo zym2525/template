@@ -10,3 +10,9 @@ export const APP_UNMOUNT = 'APP_UNMOUNT';
 //home
 export const HOME_INIT = 'HOME_INIT';
 
+class BaseActionType {
+    constructor() {
+
+    }
+
+}

@@ -3,11 +3,11 @@ import {
 } from '@/constants/actionTypes';
 
 export const startLoading = () => ({
-    type: LOADING,
+    type: 'common/loading',
     payload: true,
 })
 
 export const endLoading = () => ({
-    type: LOADING,
+    type: 'common/loading',
     payload: false,
 })

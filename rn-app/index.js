@@ -2,7 +2,7 @@
  * @format
  */
 
-import { AppRegistry, YellowBox } from 'react-native';
+import { AppRegistry, LogBox } from 'react-native';
 import App from './src'
 // import App from './App'
 import { name as appName } from './app.json';
@@ -38,6 +38,6 @@ if (!__DEV__) {
         assert: () => { },
     };
 }
-YellowBox.ignoreWarnings(['Require cycle', 'Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Setting a timer for a long period of time, i.e. multiple minutes', 'Warning: componentWillReceiveProps']);
+LogBox.ignoreLogs(['Require cycle', 'Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Setting a timer for a long period of time, i.e. multiple minutes', 'Warning: componentWillReceiveProps']);
 
 AppRegistry.registerComponent(appName, () => App);

@@ -14,6 +14,8 @@ import { transparencyStatusBarHeaderConfig, nativeStackConfig, HeaderLeft } from
 import { useSelector } from 'react-redux'
 
 import HomeScreen from '@/view/Home/Home'
+import StartUpScreen from '@/view/StartUp/StartUp'
+import LoginScreen from '@/view/Login/Login'
 import TestScreen from '@/view/Test/Test'
 import RefreshListScreen from '@/view/RefreshList/RefreshList'
 import StickyItemScreen from '@/view/StickyItem/StickyItem'
@@ -96,9 +98,14 @@ export default function App() {
                     // ...transparencyStatusBarHeaderConfig({ navigation, route }),
                     // ...nativeStackConfig({ navigation, route }),
                 })}
-                initialRouteName='Home'
+                initialRouteName='StartUp'
             >
-                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="StartUp" component={StartUpScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false, ...TransitionPresets.ScaleFromCenterAndroid }} />
+                {
+                    user == null &&
+                    <Stack.Screen name="Login" component={LoginScreen} />
+                }
                 <Stack.Screen name="Test" component={TestScreen} />
                 <Stack.Screen name="RefreshList" component={RefreshListScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="StickyItem" component={StickyItemScreen} />

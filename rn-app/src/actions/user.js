@@ -5,8 +5,8 @@ import {
 } from '@/constants/actionTypes';
 import { getItem, mergeItem, removeItem } from '@/services/storage';
 
-export const watchLogin = (params, resolved, rejected) => ({
-    type: WATCH_LOGIN,
+export const login = (params, resolved, rejected) => ({
+    type: 'user/login',
     payload: { params },
     meta: { resolved, rejected }
 })

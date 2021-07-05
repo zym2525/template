@@ -6,8 +6,7 @@ import TimerMixin from 'react-timer-mixin';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as UserAction from '../../actions/user';
-import * as homeActions from '../../actions/home';
+import * as userActions from '@/actions/user';
 
 class StartUp extends Component {
     constructor(props) {
@@ -16,70 +15,51 @@ class StartUp extends Component {
         };
     }
 
+    componentDidMount() {
+        console.log(this.props.dispatch);
+    }
+
     componentWillUnmount() {
         this.timer && TimerMixin.clearTimeout(this.timer)
     }
 
-    // checkUserToken() {
-    //     console.log('checkUserToken')
-    //     UserAction.getConfig().then((data) => {
-    //         console.log('User data: ', data);
-    //         if (data && data.access_token && data.username && data.password) {
-    //             this.refreshUserToken(data);
-    //         } else {
-    //             this.onCheckUserTokenRejected();
-    //         }
-    //     }).catch(err => {
-    //         console.log(err);
-    //         this.onCheckUserTokenRejected();
-    //     })
-    // }
+    checkUserToken() {
+        userActions.getConfig().then((data) => {
+            if (data && data.access_token && data.username && data.password) {
+                this.refreshUserToken(data);
+            } else {
+                this.onCheckUserTokenRejected()
+            }
+        }).catch(error => {
+            this.onCheckUserTokenRejected()
+        })
+    }
 
-    // refreshUserToken(params) {
-    //     let { userActions } = this.props;
-    //     let loginParams = {
-    //         LoginName: params.username,
-    //         Password: params.password
-    //     }
-    //     if (params.isFromNBEduPlat) {
-    //         // loginParams.IsFromNBEduPlat = true
-    //     }
-    //     userActions.watchLogin(loginParams, (data) => {
-    //         this.showHomePage();
-    //     }, this.onCheckUserTokenRejected.bind(this))
-    // }
+    refreshUserToken(params) {
+        let { userActions, navigation } = this.props;
+        let loginParams = {
+            userName: params.userName,
+            password: params.password
+        }
+        userActions.login(loginParams, (data) => {
+            this.showHomePage();
+        }, this.onCheckUserTokenRejected.bind(this))
+    }
 
-    // onCheckUserTokenRejected() {
-    //     this.showLoginPage();
-    // }
-
-    // showHomePage() {
-    //     let { homeActions, navigation } = this.props;
-    //     homeActions.homeInit([], () => {
-    //         navigation.navigate('AppStack')
-    //     }, () => {
-    //         navigation.navigate('AppStack')
-    //     })
-    // }
-
-    // showLoginPage() {
-    //     let { homeActions, navigation } = this.props;
-    //     homeActions.homeInit([], () => {
-    //         navigation.navigate('Auth');
-    //         // navigation.navigate('LoginModifyUserInfo', {
-    //         //     userId: 'de44b9bc-648c-4e9d-bed0-7e22733e0215',
-    //         //     phoneNumber: '1885841840'
-    //         // });
-    //     }, () => {
-    //         navigation.navigate('Auth')
-    //     })
-    // }
+    onCheckUserTokenRejected() {
+        this.showHomePage();
+    }
 
     onPageContentShow() {
         this.timer = TimerMixin.setTimeout(() => {
             // this.checkUserToken()
-            this.props.navigation.navigate('App');
+            this.checkUserToken();
         }, 300);
+    }
+
+    showHomePage() {
+        let { navigation } = this.props;
+        navigation.replace('Home');
     }
 
     render() {
@@ -113,6 +93,5 @@ const styles = StyleSheet.create({
 
 export default connect((state, props) => ({
 }), dispatch => ({
-    userActions: bindActionCreators(UserAction, dispatch),
-    homeActions: bindActionCreators(homeActions, dispatch),
+    userActions: bindActionCreators(userActions, dispatch),
 }))(StartUp);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, StatusBar, FlatList, ScrollView } from 'react-native';
-import { Text, widthLoading } from '@/components'
+import { View, Text, StyleSheet, Image, StatusBar, FlatList, ScrollView } from 'react-native';
+import { widthLoading } from '@/components'
 import StyleConfig from '@/style/config'
 import ModalWrapper from '@/components/Modal/ModalWrapper'
 import { BezierRadarHeader, SmartRefreshLayout } from '@zero-d/rn-components'
@@ -36,6 +36,10 @@ const List = [
     {
         router: 'BottomSheetIndex',
         name: 'go to BottomSheet'
+    },
+    {
+        router: 'Login',
+        name: 'go to Login'
     }
 ]
 
@@ -52,12 +56,7 @@ class Home extends Component {
 
     async componentDidMount() {
 
-        // let r1 = await userService.testGet({})
-        // console.log('r1: ', r1);
-        // showModal(<TestModal />)
     }
-
-
 
     render() {
         let { navigation } = this.props;
