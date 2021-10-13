@@ -9,8 +9,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { navigationRef, isReadyRef } from './navigationHelper';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
-import { transparencyStatusBarHeaderConfig, nativeStackConfig, HeaderLeft } from './config'
-// import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { useSelector } from 'react-redux'
 
 import HomeScreen from '@/view/Home/Home'

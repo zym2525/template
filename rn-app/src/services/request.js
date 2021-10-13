@@ -13,7 +13,7 @@ const instance = axios.create({
 	timeout: timeout,
 	headers: {
 		"Content-Type": 'application/json; charset=utf-8',
-		// 'Accept': "application/json, text/plain, */*"
+		'Accept': "application/json, text/plain, */*"
 	}
 });
 
@@ -53,6 +53,73 @@ instance.interceptors.response.use(function (response) {
 	}
 	return Promise.reject(error);
 })
+
+function handleError(error) {
+	console.log('error: ', error);
+	if (error && error.response) {
+		switch (error.response.status) {
+			case 400:
+				error.message = '请求错误'
+				break;
+
+			case 401:
+				error.message = '未授权，请登录'
+				break;
+
+			case 403:
+				error.message = '拒绝访问'
+				break;
+
+			case 404:
+				error.message = `请求地址出错: ${error.response.config.url}`
+				break;
+
+			case 408:
+				error.message = '请求超时'
+				break;
+
+			/**
+			 * 接口上有返回errors 因此进入default处理
+			 */
+			case 500:
+				error.message = error?.response?.data?.errors ?? '服务器内部错误';
+				break;
+
+			case 501:
+				error.message = '服务未实现'
+				break;
+
+			case 502:
+				error.message = '网关错误'
+				break;
+
+			case 503:
+				error.message = '服务不可用'
+				break;
+
+			case 504:
+				error.message = '网关超时'
+				break;
+
+			case 505:
+				error.message = "HTTP版本不受支持"
+				break;
+			default:
+				error.message = error?.response?.data?.errors;
+				break;
+		}
+	} else {
+		if (error.message.includes('timeout')) {
+			error.message = '请求超时';
+		} else if (error.message.includes('Network Error')) {
+			error.message = '网络错误';
+		}
+	}
+	if (error?.response?.status === 401) {
+		handle401(error.message)
+	}
+	toast(error.message.replace(/\[.*\]/, '').trim());
+}
 
 export function get(uri, params = {}, resolve, reject) {
 	return instance.get(uri, { params })
