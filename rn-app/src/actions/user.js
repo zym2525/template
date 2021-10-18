@@ -1,36 +1,6 @@
-import {
-    WATCH_LOGIN,
-    LOGIN_OUT,
-    APP_UNMOUNT,
-} from '@/constants/actionTypes';
-import { getItem, mergeItem, removeItem } from '@/services/storage';
+import { userSlice } from '@/reducers/user'
+import { createSagaAction, createSagaActionByParams } from '@/reducers/createSagaActions'
 
-export const login = (params, resolved, rejected) => ({
-    type: 'user/login',
-    payload: { params },
-    meta: { resolved, rejected }
-})
+export const { login } = userSlice.actions;
 
-export const loginOut = () => ({
-    type: LOGIN_OUT,
-})
-
-export const getConfig = () => {
-    return getItem('USER_TOKEN');
-}
-
-export const updateConfig = (value) => {
-    return mergeItem('USER_TOKEN', value);
-}
-
-export const logOut = () => {
-    return removeItem('USER_TOKEN');
-}
-
-export function getToken() {
-    return getItem('USER_TOKEN');
-}
-
-export const appUnmount = () => ({
-    type: APP_UNMOUNT,
-})
+export const loginSaga = createSagaActionByParams(login);

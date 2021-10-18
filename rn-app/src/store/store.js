@@ -1,12 +1,11 @@
 'use strict';
-import { createStore, applyMiddleware } from 'redux';
+// import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga'
 import { createLogger } from 'redux-logger'
-// import { handeSagaError } from '@/sagas/help'
-import { create } from '@zero-d/dva-core';
-import models, { initStore } from './models'
-
-// const targetStore = initStore(models);
+// import models, { initStore } from './models'
+import { configureStore } from '@reduxjs/toolkit'
+import rootReducer from "../reducers";
+import { rootSaga } from '../sagas'
 
 const logger = createLogger({
     diff: true,
@@ -18,40 +17,30 @@ const logger = createLogger({
     collapsed: (getState, action, logEntry) => !logEntry.error
 });
 
-const middlewares = [];
+const sagaMiddleware = createSagaMiddleware()
+
+const middlewares = [sagaMiddleware];
 
 if (__DEV__) {
     middlewares.push(logger)
 }
 
-let app = create({
-    onAction: middlewares
-});
-
-models.forEach((o) => {
-    // 装载models对象
-    app.model(o);
-});
-
-app.start(); // 实例初始化
-
-export const dvaStore = app._store;
-
 const isDebuggingInBrowser = __DEV__ && !!window.navigator.userAgent;
 
-//如果热更新 自动替换store
+export let store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware({ thunk: false, serializableCheck: false }), ...middlewares]
+})
+
+sagaMiddleware.run(rootSaga)
+
 if (module.hot) {
     module.hot.accept(() => {
-        // store.replaceReducer(targetStore.reducers);
-        const newModels = require('./models').default
-        newModels.forEach((o) => {
-            app.replaceModel(o);
-        });
+        const nextRootReducer = require('../reducers').default;
+        store.replaceReducer(nextRootReducer);
     });
 }
 
 if (isDebuggingInBrowser) {
-    window.store = dvaStore;
+    window.store = store;
 }
-
-export const Store = dvaStore;

@@ -28,7 +28,7 @@ class Login extends Component {
             toast('密码不能为空');
             return;
         }
-        this.props.userActions.login({
+        this.props.userActions.loginSaga({
             userName, password
         })
     }

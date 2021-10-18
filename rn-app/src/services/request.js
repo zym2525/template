@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import { toast } from '@/utils/common';
-import * as userActions from '@/actions/user';
+import { getUserToken } from '@/utils/storage'
 import axios from 'axios';
-import qs from 'qs';
 import { SERVER_URL } from '@/constants/api'
 
 const timeout = 10000;
@@ -22,7 +21,7 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(async config => {
 	// console.log('config: ', config);
-	let token = await userActions.getToken();
+	let token = await getUserToken();
 	if (token) {
 		config.headers.Authorization = `Bearer ${token.access_token}`
 	}

@@ -20,6 +20,14 @@ module.exports = {
       }
     ],
     [
+      "import",
+      {
+        libraryName: "ahooks",
+        camel2DashComponentName: false
+      },
+      "ahooks"
+    ],
+    [
       "module-resolver",
       {
         "root": [

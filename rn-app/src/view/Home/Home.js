@@ -40,7 +40,11 @@ const List = [
     {
         router: 'Login',
         name: 'go to Login'
-    }
+    },
+    {
+        router: 'Counter',
+        name: 'go to Counter'
+    },
 ]
 
 @widthLoading(props => props.loading)
@@ -63,7 +67,7 @@ class Home extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: '#fff', }}>
                 <FlatList
-                    refreshControl={<SmartRefreshLayout HeaderComponent={() => <BezierRadarHeader />} />}
+                    refreshControl={<SmartRefreshLayout HeaderComponent={() => <BezierRadarHeader primaryColor='#59b8fa' />} />}
                     data={List}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) =>

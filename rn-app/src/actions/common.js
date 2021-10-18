@@ -1,13 +1,4 @@
-import {
-    LOADING
-} from '@/constants/actionTypes';
+import { commonSlice } from '@/reducers/common'
+import { createSagaAction } from '@/reducers/createSagaActions'
 
-export const startLoading = () => ({
-    type: 'common/loading',
-    payload: true,
-})
-
-export const endLoading = () => ({
-    type: 'common/loading',
-    payload: false,
-})
+export const { endLoading, startLoading, loading, error_message } = commonSlice.actions

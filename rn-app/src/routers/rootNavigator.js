@@ -21,6 +21,7 @@ import BottomSheetScreen from '@/view/BottomSheet/BottomSheet'
 import BottomSheetIndexScreen from '@/view/BottomSheet/index'
 import BlurToolbarScreen from '@/view/BottomSheet/BlurToolbar'
 import BounceLayoutScreen from '@/view/BottomSheet/BounceLayout'
+import CounterScreen from '@/view/Counter/Counter'
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
@@ -111,6 +112,7 @@ export default function App() {
                 <Stack.Screen name="BottomSheet" component={BottomSheetScreen} />
                 <Stack.Screen name="BlurToolbar" component={BlurToolbarScreen} />
                 <Stack.Screen name="BounceLayout" component={BounceLayoutScreen} />
+                <Stack.Screen name="Counter" component={CounterScreen} />
 
             </Stack.Navigator>
         </NavigationContainer>

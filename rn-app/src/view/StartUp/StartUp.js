@@ -7,6 +7,7 @@ import TimerMixin from 'react-timer-mixin';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as userActions from '@/actions/user';
+import { getUserToken } from '@/utils/storage'
 
 class StartUp extends Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class StartUp extends Component {
     }
 
     checkUserToken() {
-        userActions.getConfig().then((data) => {
+        getUserToken().then((data) => {
             if (data && data.access_token && data.username && data.password) {
                 this.refreshUserToken(data);
             } else {
@@ -41,7 +42,7 @@ class StartUp extends Component {
             userName: params.userName,
             password: params.password
         }
-        userActions.login(loginParams, (data) => {
+        userActions.loginSaga(loginParams, (data) => {
             this.showHomePage();
         }, this.onCheckUserTokenRejected.bind(this))
     }
