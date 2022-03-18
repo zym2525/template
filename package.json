@@ -6,7 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "post-commit": "exec < /dev/tty&& node scripts/check-version.js",
     "update": "git tag -a 1.0.5 && git push origin 1.0.5",
-    "release": "dotenv -e .releaseEnv release-it --"
+    "release": "dotenv -e .releaseEnv release-it --",
+    "releasemajor": "dotenv -e .releaseEnv release-it major --",
+    "releaseminor": "dotenv -e .releaseEnv release-it minor --"
   },
   "repository": {
     "type": "git",
