@@ -10,18 +10,19 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { navigationRef, isReadyRef } from './navigationHelper';
 import { useReduxDevToolsExtension } from '@react-navigation/devtools';
 import { useSelector } from 'react-redux'
+import { CustomNavigationBar } from '@/components'
 
 import HomeScreen from '@/view/Home/Home'
 import StartUpScreen from '@/view/StartUp/StartUp'
 import LoginScreen from '@/view/Login/Login'
-import TestScreen from '@/view/Test/Test'
+// import TestScreen from '@/view/Test/Test'
 import RefreshListScreen from '@/view/RefreshList/RefreshList'
 import StickyItemScreen from '@/view/StickyItem/StickyItem'
 import BottomSheetScreen from '@/view/BottomSheet/BottomSheet'
 import BottomSheetIndexScreen from '@/view/BottomSheet/index'
 import BlurToolbarScreen from '@/view/BottomSheet/BlurToolbar'
-import BounceLayoutScreen from '@/view/BottomSheet/BounceLayout'
 import CounterScreen from '@/view/Counter/Counter'
+import WaterfallGridScreen from '@/view/WaterfallGrid/WaterfallGrid'
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
@@ -94,8 +95,7 @@ export default function App() {
             <Stack.Navigator
                 screenOptions={({ route, navigation }) => ({
                     ...TransitionPresets.SlideFromRightIOS,
-                    // ...transparencyStatusBarHeaderConfig({ navigation, route }),
-                    // ...nativeStackConfig({ navigation, route }),
+                    header: (props) => <CustomNavigationBar {...props} />
                 })}
                 initialRouteName='StartUp'
             >
@@ -105,14 +105,14 @@ export default function App() {
                     user == null &&
                     <Stack.Screen name="Login" component={LoginScreen} />
                 }
-                <Stack.Screen name="Test" component={TestScreen} />
                 <Stack.Screen name="RefreshList" component={RefreshListScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="StickyItem" component={StickyItemScreen} />
+
                 <Stack.Screen name="BottomSheetIndex" component={BottomSheetIndexScreen} />
                 <Stack.Screen name="BottomSheet" component={BottomSheetScreen} />
-                <Stack.Screen name="BlurToolbar" component={BlurToolbarScreen} />
-                <Stack.Screen name="BounceLayout" component={BounceLayoutScreen} />
+                <Stack.Screen name="BlurToolbar" component={BlurToolbarScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Counter" component={CounterScreen} />
+                <Stack.Screen name="WaterfallGrid" component={WaterfallGridScreen} />
 
             </Stack.Navigator>
         </NavigationContainer>

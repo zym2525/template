@@ -1,24 +1,13 @@
 module.exports = {
   presets: ['module:metro-react-native-babel-preset'],
-  "plugins": [
+  plugins: [
     [
       "@babel/plugin-proposal-decorators",
       {
         "legacy": true
       }
     ],
-    [
-      "lodash",
-      {
-        "id": "recompact"
-      }
-    ],
-    [
-      "import",
-      {
-        libraryName: "@ant-design/react-native"
-      }
-    ],
+    "lodash",
     [
       "import",
       {
@@ -35,13 +24,15 @@ module.exports = {
         ],
         "alias": {
           "@": "./src",
+          "@config": "./config"
         }
       }
-    ]
+    ],
+    'react-native-reanimated/plugin',
   ],
-  "env": {
-    "production": {
-      "plugins": [
+  env: {
+    production: {
+      plugins: [
         "transform-remove-console",
         "react-native-paper/babel"
       ]

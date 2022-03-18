@@ -4,7 +4,10 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { decrement, increment, incrementByAmount } from '@/reducers/counter'
 import { TextInput, Button } from 'react-native-paper'
-import { WhiteSpace } from '@ant-design/react-native';
+
+const WhiteSpace = () => (
+    <View style={{ height: 20 }}></View>
+)
 
 const Counter = () => {
 

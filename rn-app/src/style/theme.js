@@ -1,4 +1,10 @@
 import { StyleSheet } from 'react-native'
+import {
+    NavigationContainer,
+    DarkTheme as NavigationDarkTheme,
+    DefaultTheme as NavigationDefaultTheme,
+} from '@react-navigation/native';
+import { DefaultTheme as PaperDefaultTheme } from '@zero-d/rn-components'
 
 const theme = {
     // 文字色
@@ -33,6 +39,16 @@ const theme = {
     toast_fill: 'rgba(0, 0, 0, .6)',
 };
 
-export default theme;
+export const CombinedDefaultTheme = {
+    ...PaperDefaultTheme,
+    ...NavigationDefaultTheme,
+    colors: {
+        ...PaperDefaultTheme.colors,
+        ...NavigationDefaultTheme.colors,
+        primary: theme.color_text_base_blue,
+        text: theme.color_text_base,
+        accent: '#f1c40f',
+    },
+};
 
-module.exports = theme;
+export default theme;

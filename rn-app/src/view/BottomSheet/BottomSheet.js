@@ -1,147 +1,103 @@
-import React from 'react'
-import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableWithoutFeedback,
-    View,
-    TextInput,
-} from 'react-native'
-import { BottomSheetBehavior as BottomSheet } from '@zero-d/rn-components'
+import { StyleSheet, Text, View, Image } from 'react-native'
+import React, { useRef, useMemo, useCallback } from 'react'
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { Button } from 'react-native-paper'
+import ContactItem from './ContactItem'
+import { useFocusEffect } from '@react-navigation/native';
+import Mock from 'mockjs'
+import { useSharedValue, useAnimatedStyle } from 'react-native-reanimated'
 
-export default class Example extends React.Component {
 
-    renderInner = () => (
-        <View style={styles.panel}>
-            <TextInput
-                style={styles.search}
-                onFocus={() => {
-                    this.bs.current.snapTo(1)
-                }}
-                placeholder="search"
+const data = Mock.mock({
+    'items|10-20': [{
+        name: '@name',
+        jobTitle: '@city(true)',
+    }]
+})
+
+const BottomSheetPage = () => {
+
+    const bottomSheetRef = useRef(null);
+
+    const snapPoints = useMemo(() => ['25%', '50%', '90%', '100%'], []);
+
+    const handleSnapPress = useCallback(index => {
+        bottomSheetRef.current?.snapToIndex(index);
+    }, []);
+    const handleExpandPress = useCallback(() => {
+        bottomSheetRef.current?.expand();
+    }, []);
+    const handleCollapsePress = useCallback(() => {
+        bottomSheetRef.current?.collapse();
+    }, []);
+    const handleClosePress = useCallback(() => {
+        bottomSheetRef.current?.close();
+    }, []);
+
+    const renderScrollViewItem = useCallback(
+        (item, index) => (
+            <ContactItem
+                key={`${item.name}.${index}`}
+                title={`${index}: ${item.name}`}
+                subTitle={item.jobTitle}
+            // onPress={onItemPress}
             />
-            <Text style={styles.panelTitle}>San Francisco Airport</Text>
-            <Text style={styles.panelSubtitle}>
-                International Airport - 40 miles away
-      </Text>
-            <View style={styles.panelButton}>
-                <Text style={styles.panelButtonTitle}>Directions</Text>
-            </View>
-            <View style={styles.panelButton}>
-                <Text style={styles.panelButtonTitle}>Search Nearby</Text>
-            </View>
-            <Image
-                style={styles.photo}
-                source={{ uri: 'https://raw.githubusercontent.com/osdnk/react-native-reanimated-bottom-sheet/master/Example/assets/airport-photo.jpg' }}
-            />
+        ),
+        []
+    );
+
+    const animatedIndex = useSharedValue(0);
+
+    const animatedStyle = useAnimatedStyle(() => {
+        console.log('animatedIndex: ', animatedIndex);
+        return {}
+    })
+
+    return (
+        <View style={styles.container}>
+            <Button style={styles.button} mode="contained" onPress={() => handleSnapPress(3)} >Snap To 100%</Button>
+            <Button style={styles.button} mode="contained" onPress={() => handleSnapPress(2)} >Snap To 90%</Button>
+            <Button style={styles.button} mode="contained" onPress={() => handleSnapPress(1)} >Snap To 50%</Button>
+            <Button style={styles.button} mode="contained" onPress={() => handleSnapPress(0)} >Snap To 25%</Button>
+            <Button style={styles.button} mode="contained" onPress={handleExpandPress} >Expand</Button>
+            <Button style={styles.button} mode="contained" onPress={handleCollapsePress} >Collapse</Button>
+            <Button style={styles.button} mode="contained" onPress={handleClosePress} >Close</Button>
+            <BottomSheet
+                ref={bottomSheetRef}
+                index={1}
+                snapPoints={snapPoints}
+                animateOnMount={true}
+            >
+                <BottomSheetScrollView
+                    style={{ overflow: 'visible', flex: 1, }}
+                    contentContainerStyle={{
+                        paddingHorizontal: 16,
+                        overflow: 'visible',
+                    }}
+                    bounces={true}
+                    focusHook={useFocusEffect}
+                >
+                    {data.items.map(renderScrollViewItem)}
+                </BottomSheetScrollView>
+            </BottomSheet>
         </View>
     )
-
-    renderHeader = () => (
-        <View style={styles.header}>
-            <View style={styles.panelHeader}>
-                <View style={styles.panelHandle} />
-            </View>
-        </View>
-    )
-
-    bs = React.createRef()
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <BottomSheet
-                    ref={this.bs}
-                    snapPoints={[500, 250]}
-                    renderContent={this.renderInner}
-                    renderHeader={this.renderHeader}
-                    initialSnap={1}
-                // enabledInnerScrolling={false}
-                />
-                <TouchableWithoutFeedback onPress={() => this.bs.current.snapTo(0)}>
-                    <Image style={styles.map} source={{ uri: 'https://aihuifile.oss-cn-hangzhou.aliyuncs.com/2021/Rescourse/Material/20210104/xYFyWFscy2.jpg' }} />
-                </TouchableWithoutFeedback>
-            </View>
-        )
-    }
 }
 
-const IMAGE_SIZE = 200
-
 const styles = StyleSheet.create({
-    search: {
-        borderColor: 'gray',
-        borderWidth: StyleSheet.hairlineWidth,
-        height: 40,
-        borderRadius: 10,
-        paddingHorizontal: 15,
-    },
     container: {
         flex: 1,
         backgroundColor: '#F5FCFF',
-    },
-    box: {
-        width: IMAGE_SIZE,
-        height: IMAGE_SIZE,
-    },
-    panelContainer: {
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-    },
-    panel: {
-        height: 600,
-        padding: 20,
-        backgroundColor: '#f7f5ee',
-    },
-    header: {
-        backgroundColor: '#f7f5ee',
-        shadowColor: '#000000',
-        paddingTop: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-    },
-    panelHeader: {
-        alignItems: 'center',
-    },
-    panelHandle: {
-        width: 40,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#00000040',
-        marginBottom: 10,
-    },
-    panelTitle: {
-        fontSize: 27,
-        height: 35,
-    },
-    panelSubtitle: {
-        fontSize: 14,
-        color: 'gray',
-        height: 30,
-        marginBottom: 10,
-    },
-    panelButton: {
-        padding: 20,
-        borderRadius: 10,
-        backgroundColor: '#318bfb',
-        alignItems: 'center',
-        marginVertical: 10,
-    },
-    panelButtonTitle: {
-        fontSize: 17,
-        fontWeight: 'bold',
-        color: 'white',
+        padding: 24,
     },
     photo: {
         width: '100%',
         height: 225,
         marginTop: 30,
     },
-    map: {
-        height: '100%',
-        width: '100%',
-    },
+    button: {
+        marginBottom: 20
+    }
 })
+
+export default BottomSheetPage

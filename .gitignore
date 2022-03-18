@@ -58,6 +58,7 @@ node_modules
 
 # Bundle artifact
 **/*.jsbundle
+**/*.bundle
 
 # CocoaPods
 **//ios/Pods/
@@ -71,3 +72,5 @@ node_modules
 
 **/src/view/ParallaxHeader/*
 **/src/components/Parallax/*
+
+HelloZerod/

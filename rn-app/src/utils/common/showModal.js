@@ -1,6 +1,5 @@
 import React from 'react';
-// import { Portal } from '@zero-d/rn-components'
-import { Portal } from '@ant-design/react-native'
+import { Portal } from '@zero-d/rn-components'
 
 export function showModal(node) {
     let key = 0;

@@ -1,165 +1,167 @@
-import React from 'react'
-import { Image, StyleSheet, Text, View, Dimensions, StatusBar } from 'react-native'
-import { BottomSheetBehavior as BottomSheet } from '@zero-d/rn-components'
-import Animated, { debug, interpolate, Extrapolate, max, multiply, add } from 'react-native-reanimated'
+import { StyleSheet, Text, View, Dimensions, StatusBar } from 'react-native'
+import React, { useRef, useMemo, useCallback } from 'react'
+import Animated, { useSharedValue, useAnimatedStyle, interpolate, Extrapolate, useDerivedValue } from 'react-native-reanimated'
+import ContactItem from './ContactItem'
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import Mock from 'mockjs'
+import { CustomNavigationBar } from '@/components'
+import { useLayout } from '@/utils/hooks'
 
-export default class Example extends React.Component {
+const data = Mock.mock({
+    'items|10-20': [{
+        name: '@name',
+        jobTitle: '@city(true)',
+    }]
+})
 
-    static navigationOptions = ({ navigation }) => ({
-        headerShown: false
-    });
+const AppBarHeight = 56;
 
-    constructor(props) {
-        super(props);
-    }
+const BlurToolbar = ({ navigation }) => {
+
+    const [{ height: contentHeight }, onLayout] = useLayout()
+
+    const fullScreenHeight = Dimensions.get('screen').height - StatusBar.currentHeight - AppBarHeight;
+
+    const headerContentHeight = 200;
+
+    const headerHeight = fullScreenHeight - headerContentHeight;
+
+    const initHeight = '45%';
+
+    const snapPoints = useMemo(() => [initHeight, headerHeight, fullScreenHeight], [headerHeight]);
+
+    const initHeightIndex = snapPoints.findIndex(x => x == initHeight);
+
+    const headerHeightIndex = snapPoints.findIndex(x => x == headerHeight);
+
+    const fullScreenHeightIndex = snapPoints.findIndex(x => x == fullScreenHeight);
+
+    const renderScrollViewItem = useCallback(
+        (item, index) => (
+            <ContactItem
+                key={`${item.name}.${index}`}
+                title={`${index}: ${item.name}`}
+                subTitle={item.jobTitle}
+            // onPress={onItemPress}
+            />
+        ),
+        []
+    );
 
 
-    titleHeight = 60;
+    const animatedIndex = useSharedValue(0);
 
-    headerHeight = 240;
+    const contentBgStyle = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(animatedIndex.value, [initHeightIndex, headerHeightIndex], [1, 0], Extrapolate.CLAMP),
+        }
+    })
 
-    fullScreenHeight = Dimensions.get('screen').height - StatusBar.currentHeight - this.titleHeight;
+    const mapScale = useAnimatedStyle(() => {
+        let scale = animatedIndex.value >= 0 ? 1 : animatedIndex.value * -1 + 1;
+        return {
+            transform: [{ scale: scale }]
+        }
+    })
 
-    secScreenHeight = this.fullScreenHeight - this.headerHeight;
+    const headerTextStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(animatedIndex.value, [initHeightIndex, headerHeightIndex], [0, 1], Extrapolate.CLAMP)
+        const translateX = interpolate(animatedIndex.value, [headerHeightIndex, fullScreenHeightIndex], [-120, 0], Extrapolate.CLAMP)
+        const translateY = interpolate(animatedIndex.value, [headerHeightIndex, fullScreenHeightIndex], [(headerContentHeight + 20) / 2, (AppBarHeight - 40) / 2], Extrapolate.CLAMP)
+        return {
+            opacity: opacity,
+            transform: [{ translateX: translateX }, { translateY: translateY }, { scale: 1 }],
+        }
+    })
 
-    initHeight = 400;
+    const headerAnimatedStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(animatedIndex.value, [initHeightIndex, headerHeightIndex], [0, 1], Extrapolate.CLAMP)
+        const translateY = interpolate(animatedIndex.value, [headerHeightIndex, fullScreenHeightIndex], [0, -headerContentHeight], Extrapolate.CLAMP)
+        return {
+            opacity: opacity,
+            transform: [{ translateY: translateY }],
+        }
+    })
 
-    secScreenPoint = this.headerHeight / (this.fullScreenHeight - this.initHeight)
-
-    componentDidMount() {
-        console.log(this.headerHeight, this.secScreenHeight, this.fullScreenHeight);
-    }
-
-    renderInner = () => (
-        <View style={[styles.content]}>
-            {
-                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, index) =>
-                    <View style={styles.panelButton} key={index}>
-                        <Text style={styles.panelButtonTitle}>renderInner{index + 1}</Text>
-                    </View>
-                )
-            }
-
-        </View>
-    )
-
-    renderHeader = () => {
-        let opacity = interpolate(this.fall, {
-            inputRange: [0, this.secScreenPoint, 1],
-            outputRange: [1, 1, 0],
-            extrapolate: Extrapolate.CLAMP
-        })
-
-        let translateY = interpolate(this.fall, {
-            inputRange: [0, this.secScreenPoint, 1],
-            outputRange: [-this.headerHeight, 0, 0],
-            extrapolate: Extrapolate.CLAMP
-        })
-
-        let needY = (this.headerHeight + this.titleHeight) / 2;
-
-        let breakPoint = (this.headerHeight - needY) / (this.fullScreenHeight - this.initHeight);
-
-        // let needY = (this.headerHeight + this.titleHeight) / 2;
-
-        let titleTranslateY = interpolate(this.fall, {
-            inputRange: [breakPoint, this.secScreenPoint, 1],
-            outputRange: [0, needY, needY],
-            extrapolate: Extrapolate.CLAMP
-        })
-
-        let titleTranslateX = interpolate(this.fall, {
-            inputRange: [breakPoint, this.secScreenPoint, 1],
-            outputRange: [0, -100, -100],
-            extrapolate: Extrapolate.CLAMP
-        })
-
-        let titleScale = interpolate(this.fall, {
-            inputRange: [breakPoint, this.secScreenPoint, 1],
-            outputRange: [1, 1.5, 1.5],
-            extrapolate: Extrapolate.CLAMP
-        })
-
+    const renderHeader = () => {
         return <View style={styles.headerWrapper}>
-            <Animated.View style={styles.title}>
-                <Text style={styles.arrow} onPress={() => this.props.navigation.goBack()}>&#xe606;</Text>
-                <Animated.Text
-                    style={[
-                        styles.headerText,
-                        {
-                            position: 'absolute',
-                            zIndex: 2000,
-                            opacity: opacity,
-                            transform: [{ translateX: titleTranslateX }, { translateY: titleTranslateY }, { scale: titleScale }],
-                        }
-                    ]}
-                >this is header</Animated.Text>
-            </Animated.View>
+            <View style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }}>
+                <CustomNavigationBar navigation={navigation} back options={{ title: '' }} />
+            </View>
             <Animated.View
                 style={[
                     styles.header,
                     {
-                        height: this.headerHeight + this.titleHeight,
-                        opacity: opacity,
-                        transform: [{ translateY: translateY }],
-                    }]
+                        // backgroundColor: 'red',
+                        height: headerContentHeight,
+                        marginTop: AppBarHeight
+                    },
+                    headerAnimatedStyle
+                ]
                 } >
-
+                <Text>djkfhjkdshfjkdh</Text>
             </Animated.View>
-
-        </View>
+            <Animated.Text
+                style={
+                    [
+                        styles.headerText,
+                        {
+                            position: 'absolute',
+                            zIndex: 2000,
+                        },
+                        headerTextStyle
+                    ]}
+            >this is header</Animated.Text >
+        </View >
     }
 
-    fall = new Animated.Value(1)
-
-
-    render() {
-
-        let imageOpacity = interpolate(this.fall, {
-            inputRange: [0, this.secScreenPoint, 1],
-            outputRange: [0, 0, 1],
-            extrapolate: Extrapolate.CLAMP
-        })
-
-        return (
-            <View style={styles.container}>
+    return (
+        <View style={{ flex: 1 }}>
+            <View style={styles.container} onLayout={onLayout}>
                 {
-                    this.renderHeader()
+                    renderHeader()
                 }
-                <BottomSheet
-                    snapPoints={[this.fullScreenHeight, this.secScreenHeight, this.initHeight]}
-                    renderContent={this.renderInner}
-                    // renderHeader={this.renderHeader}
-                    initialSnap={2}
-                    callbackNode={this.fall}
-                    enabledBottomInitialAnimation
-                // enabledInnerScrolling={false}
-                />
                 <Animated.View
-                    style={{
-                        alignItems: 'center',
-                        opacity: imageOpacity,
-                    }}
+                    style={[
+                        {
+                            alignItems: 'center',
+                            overflow: 'hidden',
+                            marginTop: AppBarHeight
+                        },
+                        contentBgStyle
+                    ]}
                 >
                     <Animated.Image
                         style={
                             [
                                 styles.map,
-                                {
-
-                                    transform: [{ scale: max(1, multiply(this.fall, 0.8)) }],
-                                }
+                                mapScale
                             ]
 
                         }
                         source={{ uri: 'https://aihuifile.oss-cn-hangzhou.aliyuncs.com/2021/Rescourse/Material/20210104/xYFyWFscy2.jpg' }}
                     />
                 </Animated.View>
+                <BottomSheet
+                    snapPoints={snapPoints}
+                    animateOnMount={true}
+                    animatedIndex={animatedIndex}
+                >
+                    <BottomSheetScrollView
+                        style={{ overflow: 'visible', flex: 1, }}
+                        contentContainerStyle={{
+                            paddingHorizontal: 16,
+                            overflow: 'visible',
+                        }}
+                        bounces={true}
+                    >
+                        {data.items.map(renderScrollViewItem)}
+                    </BottomSheetScrollView>
+                </BottomSheet>
             </View>
-        )
-    }
+        </View>
+    )
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -171,51 +173,26 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: '#fff'
     },
-    content: {
-        padding: 20,
-        backgroundColor: '#f7f5ee',
-    },
     headerWrapper: {
         position: 'absolute',
-        width: Dimensions.get('screen').width
-    },
-    title: {
-        position: 'absolute',
-        width: Dimensions.get('screen').width,
-        backgroundColor: '#fff',
-        padding: 20,
-        height: 60,
-        zIndex: 1000,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    header: {
-        backgroundColor: '#59b8fa',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 60
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'transparent',
+        overflow: 'visible',
+        zIndex: 1
     },
     headerText: {
         fontSize: 28,
-        height: 40
+        height: 40,
+        textAlignVertical: 'center',
+        alignSelf: 'center'
     },
-    panelButton: {
-        height: 100,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: 1,
-        borderColor: '#ddd'
+    header: {
+        // backgroundColor: '#59b8fa',
+        // alignItems: 'center',
+        // justifyContent: 'center',
     },
-    panelButtonTitle: {
-        fontSize: 20
-    },
-    arrow: {
-        fontFamily: 'iconfont',
-        fontSize: 30,
-        color: '#c1c1c1',
-        position: 'absolute',
-        left: 20,
-        top: 15
-    }
 })
+
+export default BlurToolbar

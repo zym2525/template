@@ -1,119 +1,171 @@
-import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions, StatusBar, Image, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
 import { SmartRefreshLayout, BezierRadarHeader, ClassicsHeader, ClassicsFooter } from '@zero-d/rn-components'
-import Animated, { debug, Value, clockRunning, startClock, timing, set, cond, Clock, event, sub, min, Easing, block, stopClock, divide, add, max, interpolate, Extrapolate } from 'react-native-reanimated'
-import { px2dp } from './../../utils/common/scaleSize';
-import { PanGestureHandler, State, TapGestureHandler } from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle, useSharedValue, interpolate, Extrapolate, runOnJS, useAnimatedGestureHandler } from 'react-native-reanimated'
+import { GestureDetector, Gesture, createNativeWrapper, NativeViewGestureHandler, PanGestureHandler, FlatList } from 'react-native-gesture-handler';
+import { useArray, useLayout } from '@/utils/hooks'
+import { useMemoizedFn } from 'ahooks'
+import { CustomNavigationBar } from '@/components'
+// import {DEFAULT_APPBAR_HEIGHT} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
-class RefreshList extends Component {
+const resetContext = (context) => {
+    'worklet';
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [1, 1, 1, 1,]
-        };
-        this.refreshList = React.createRef();
-        this.titleHeight = 60;
-        this.titleCollapseHeight = 200;
-        this.clock = new Clock();
-        this.dragY = new Value(0);
-        this.preDragY = new Value(0);
-        this.velocityY = new Value(0);
-        this.gestureState = new Value(-1);
-        this._onGestureEvent = event([
-            {
-                nativeEvent: { translationY: this.dragY, velocityY: this.velocityY, state: this.gestureState },
-            },
-        ]);
+    Object.keys(context).map(key => {
+        context[key] = undefined;
+    });
+};
 
+const RefreshList = () => {
 
+    const nativeGestureRef = React.useRef(null)
 
-        let maxTransY = (this.titleCollapseHeight + this.titleHeight) / 2;
-        this.translateY = interpolate(this.dragY, {
-            inputRange: [-maxTransY, 0],
-            outputRange: [0, maxTransY],
-            extrapolate: Extrapolate.CLAMP
+    const [data, { add: addData }] = useArray([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+
+    const titleHeight = 60;
+    const titleCollapseHeight = 200;
+    const maxHeaderTextTransY = (titleHeight + titleCollapseHeight) / 2;
+
+    const [layout, onLayout] = useLayout()
+    console.log('layout: ', layout);
+
+    const translationY = useSharedValue(0);
+    const startY = useSharedValue(0);
+
+    const [gestureEnabled, setGestureEnabled] = React.useState(true);
+    console.log('gestureEnabled: ', gestureEnabled);
+    const flatList = React.useRef()
+    const [didStart, setDidStart] = React.useState(false)
+    const [gestureSource, setGestureSource] = React.useState(-1)
+    const gesture = Gesture.Pan().withRef(flatList)
+        .enabled(gestureEnabled)
+        // .onStart((_, ctx) => {
+
+        // })
+        .onUpdate((event, ctx) => {
+            // if (!didStart) {
+            //     runOnJS(setDidStart)(true)
+            //     runOnJS(setGestureSource)(1);
+            //     return
+            // }
+
+            // if (gestureSource != 1) {
+            //     return
+            // }
+
+            let resY = startY.value + event.translationY;
+            // if (gestureSource == 1 && (resY == 0 || resY == -titleCollapseHeight)) {
+            //     return
+            // }
+            if (resY >= 0) {
+                translationY.value = 0;
+            } else if (resY <= -titleCollapseHeight) {
+                translationY.value = -titleCollapseHeight;
+            } else {
+                translationY.value = resY;
+            }
+            console.log(translationY.value)
+        })
+        .onEnd(() => {
+            // if (gestureSource !== 1) {
+            //     return;
+            // }
+            // runOnJS(setDidStart)(false)
+            // runOnJS(setGestureSource)(-1);
+            startY.value = translationY.value;
+        })
+        .onFinalize(() => {
+            // if (gestureSource !== 1) {
+            //     return;
+            // }
+            // runOnJS(setDidStart)(false)
+            // runOnJS(setGestureSource)(-1);
         })
 
-        // new Value((this.titleCollapseHeight + this.titleHeight) / 2);
-        this.translateX = new Value(-120);
-    }
 
-    componentDidMount() {
 
-    }
+    const headerTextAnimatedStyles = useAnimatedStyle(() => {
+        const headerTextTranslateX = interpolate(translationY.value, [-titleCollapseHeight, 0], [0, -120], Extrapolate.CLAMP)
+        const headerTextTranslateY = interpolate(translationY.value, [-titleCollapseHeight, 0], [0, maxHeaderTextTransY], Extrapolate.CLAMP)
+        return {
+            transform: [{ translateY: headerTextTranslateY }, { translateX: headerTextTranslateX }]
+        }
+    })
 
-    onRefresh() {
+    const titleCollapseAnimatedStyles = useAnimatedStyle(() => {
+        const height = interpolate(translationY.value, [-titleCollapseHeight, 0], [0, titleCollapseHeight], Extrapolate.CLAMP)
+        return {
+            // transform: [{ translateY: translationY.value }],
+            height
+        }
+    })
+
+    const refreshList = React.useRef()
+
+    const onRefresh = useMemoizedFn(() => {
         console.log('onRefresh');
         setTimeout(() => {
-            // this.setState(preState => ({
-            //     data: [1, 1, 1, 1]// preState.data.concat()
-            // }), () => {
-            this.refreshList.current.finishRefresh({ success: false })
-            // })
+            refreshList.current.finishRefresh({ success: false })
         }, 2000)
-    }
-
-    onLoadMore() {
+    })
+    const onLoadMore = useMemoizedFn(() => {
         console.log('onLoadMore');
         setTimeout(() => {
-            this.setState(preState => ({
-                data: preState.data.concat([1, 1, 1, 1])
-            }), () => {
-                if (this.state.data.length > 7) {
-                    this.refreshList.current.finishLoadMoreWithNoMoreData()
-                } else {
-                    this.refreshList.current.finishLoadMore()
-                }
+            addData([1, 1, 1, 1])
+            if (data.length > 7) {
+                refreshList.current.finishLoadMoreWithNoMoreData()
+            } else {
+                refreshList.current.finishLoadMore()
+            }
 
-            })
         }, 2000)
-    }
+    })
 
-    render() {
-        console.log(this.state.data);
-        return (
-            <PanGestureHandler
-                enabled={false}
-                minDist={10}
-                onGestureEvent={this._onGestureEvent}
-                onHandlerStateChange={this._onGestureEvent}
-            >
+    return (
+        <View style={{ flex: 1 }}>
+            <Button onPress={() => setGestureEnabled(p => !p)}>toggle</Button>
+            <GestureDetector gesture={gesture}>
                 <Animated.View style={{ flex: 1 }} collapsable={false}>
-                    <Animated.View style={[styles.title, { height: this.titleHeight }]}>
-                        <Text style={styles.arrow} onPress={() => this.props.navigation.goBack()}>&#xe606;</Text>
+                    <Animated.View style={[styles.title, { height: titleHeight }]}>
+                        {/* <Text style={styles.arrow} onPress={() => this.props.navigation.goBack()}>&#xe606;</Text> */}
                         <Animated.Text
                             style={[
                                 styles.headerText,
-                                {
-                                    position: 'absolute',
-                                    transform: [{ translateY: this.translateY }, { translateX: this.translateX }]
-                                }
+                                headerTextAnimatedStyles
                             ]}
                         >this is header</Animated.Text>
                     </Animated.View>
+                    {/* <View style={{ flex: 1 }} onLayout={onLayout}>
+                <Animated.ScrollView
+                    contentContainerStyle={{ height: layout.height + titleCollapseHeight }}
+                    showsVerticalScrollIndicator={false}
+                >
                     <Animated.View
-                        style={{
-                            height: this.titleCollapseHeight,
-                            backgroundColor: '#59b8fa'
-                        }}
+                        style={[{ backgroundColor: '#59b8fa', height: titleCollapseHeight }]}
                     >
-
                     </Animated.View>
-                    <SmartRefreshLayout
-                        style={{ flex: 1, }}
-                        onRefresh={this.onRefresh.bind(this)}
-                        onLoadMore={this.onLoadMore.bind(this)}
-                        enableAutoLoadMore={false}
-                        ref={this.refreshList}
-                        enableLoadMore
-                        primaryColor='#59b8fa'
-                    // HeaderComponent={() => <ClassicsHeader accentColor='#ffffff' spinnerStyle={ClassicsHeader.SpinnerStyle.FixedBehind} />}
-                    // enableRefresh={false}
+                </Animated.ScrollView>
+            </View> */}
+                    <Animated.View
+                        style={[{ backgroundColor: '#59b8fa', height: titleCollapseHeight }, titleCollapseAnimatedStyles]}
                     >
+                    </Animated.View>
+                    <View style={{ flex: 1, overflow: 'hidden' }} >
+                        {/* <NativeViewGestureHandler > */}
                         <FlatList
+                            // refreshControl={<SmartRefreshLayout
+                            //     style={{ flex: 1 }}
+                            //     onRefresh={onRefresh}
+                            //     onLoadMore={onLoadMore}
+                            //     enableAutoLoadMore={false}
+                            //     ref={refreshList}
+                            //     enableLoadMore
+                            //     primaryColor='#59b8fa'
+                            // />}
                             style={{ flex: 1, backgroundColor: '#fff' }}
-                            data={this.state.data}
+                            data={data}
+                            ref={flatList}
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({ item, index }) =>
                                 <Text
@@ -126,26 +178,12 @@ class RefreshList extends Component {
                                 > RefreshList {index + 1}</Text>
                             }
                         />
-                        {/* <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
-                        {
-                            this.state.data.map((item, index) =>
-                                <Text
-                                    key={index}
-                                    style={{
-                                        height: 100,
-                                        borderBottomWidth: 1,
-                                        borderBottomColor: '#dcdcdc',
-                                        fontSize: 28,
-                                    }}
-                                > RefreshList {index + 1}</Text>
-                            )
-                        }
-                    </ScrollView> */}
-                    </SmartRefreshLayout>
+                        {/* </NativeViewGestureHandler> */}
+                    </View>
                 </Animated.View>
-            </PanGestureHandler>
-        );
-    }
+            </GestureDetector>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -158,7 +196,8 @@ const styles = StyleSheet.create({
         zIndex: 1000,
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'visible'
     },
     arrow: {
         fontFamily: 'iconfont',
@@ -171,7 +210,8 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 28,
         height: 40,
+        position: 'absolute',
     },
 })
 
-export default RefreshList;
+export default RefreshList

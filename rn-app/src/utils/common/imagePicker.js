@@ -1,62 +1,80 @@
-import ImagePicker from 'react-native-image-picker'
+import React, { Component } from 'react';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import uuid from 'uuid';
 import moment from 'moment'
-import { upload } from './upload'
 import ImageCropPicker from 'react-native-image-crop-picker';
+import ModalImagePicker from '@/components/Modal/ModalImagePicker'
+import { showModal } from './showModal'
+import { PermissionsAndroid } from "react-native";
 
-export function imageUpload(ossBasePath, extra = {}, fn) {
-    let { useUpload = true } = extra;
+async function showImagePicker(options, callback) {
+    try {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            const { customButtons, ...cameraOptions } = options;
+            const node = showModal(
+                <ModalImagePicker
+                    onDismiss={() => node.destroy()}
+                    launchCamera={() => launchCamera(cameraOptions, callback)}
+                    launchImageLibrary={() => launchImageLibrary(cameraOptions, callback)}
+                    customButtons={customButtons}
+                />
+            )
+        } else {
+            console.log("Camera permission denied");
+        }
+    } catch (error) {
+        console.log('error: ', error);
+    }
+}
+
+
+/**
+ * @enum '@constants/oss'
+ * @param {oss保存基础路径} ossBasePath
+ * @param {额外参数} extra 
+ */
+export function imageUpload(ossBasePath, extra = {}) {
+    let { success } = extra;
     var options = {
-        title: '请选择图片',
-        takePhotoButtonTitle: '拍照',
-        chooseFromLibraryButtonTitle: '选择图片',
-        cancelButtonTitle: '取消',
         maxWidth: 907,
-        quality: 0.8,
-        storageOptions: {
-            skipBackup: true,
-            path: 'images'
-        },
-        customButtons: []
+        /**
+         * 故意写的很大 为了图片缩放的时候根据maxWidth来缩放
+         * @see \node_modules\react-native-image-picker\android\src\main\java\com\imagepicker -> getImageDimensBasedOnConstraints
+         */
+        maxHeight: 5000,
+        quality: 0.9,
+        customButtons: [],
     };
-    ImagePicker.showImagePicker(options, (response) => {
+    showImagePicker(options, async (response) => {
         if (response.didCancel) {
         }
         else if (response.error) {
         }
-        else if (response.customButton) {
-            // microSolutionFn && microSolutionFn()
-        }
         else {
-            // You can also display the image using data:
-            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-            //let path=createOssPath(ossPath);
-            ImageCropPicker.openCropper({
-                path: response.uri,
-                cropping: true,
-                compressImageMaxWidth: response.width,
-                compressImageMaxHeight: response.height,
-                width: response.width,
-                height: response.height,
-                freeStyleCropEnabled: true
-                // enableRotationGesture:true,
-            }).then(image => {
-                if (useUpload) {
-                    let path = createOssPath(ossBasePath);
-                    upload(path, image.path, fileRelativeName => {
-                        let source = { uri: fileRelativeName, path };
-                        fn && fn(source);
-                    });
-                } else {
-                    fn && fn(image);
-                }
-            }).catch(err => {
+            try {
+                let assets = response.assets[0];
+                let image = await ImageCropPicker.openCropper({
+                    path: assets.uri,
+                    cropping: true,
+                    compressImageMaxWidth: assets.width,
+                    compressImageMaxHeight: assets.height,
+                    freeStyleCropEnabled: true
+                    // enableRotationGesture:true,
+                })
+                console.log('image: ', image);
+                // let path = createOssPath(ossBasePath);
+                // let fileRelativeName = await upload({
+                //     ossSavePath: path,
+                //     sourceFilePath: image.path
+                // });
+                // let source = { uri: fileRelativeName, path };
+                // success?.(source);
+            } catch (err) {
                 console.log(err);
-            })
-            // upload(path,response.uri,fileRelativeName=>{
-            //     let source = { uri:fileRelativeName};
-            //     fn&&fn(source);
-            // });
+            }
         }
     });
 }

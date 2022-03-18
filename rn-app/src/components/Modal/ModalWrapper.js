@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
-import { Modal } from '@ant-design/react-native'
+import { Modal } from '@zero-d/rn-components'
 import { setSize } from '@/utils';
 
 const ModalContext = React.createContext({

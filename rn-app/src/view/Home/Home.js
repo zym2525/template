@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, StatusBar, FlatList, ScrollView } from 'react-native';
-import { widthLoading } from '@/components'
-import StyleConfig from '@/style/config'
+import { StyleSheet, View, FlatList } from 'react-native'
+import React, { Component } from 'react'
+import { widthLoading, Text } from '@/components'
 import ModalWrapper from '@/components/Modal/ModalWrapper'
 import { BezierRadarHeader, SmartRefreshLayout } from '@zero-d/rn-components'
+import { imageUpload } from '@/utils'
+import { Button } from 'react-native-paper'
 
 //redux
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActions from '@/actions/user'
-import * as userService from '@/services/userService'
-import { showModal } from './../../utils/common/showModal';
 
 const TestModal = ({ onClose }) => {
     return <ModalWrapper
@@ -45,15 +44,14 @@ const List = [
         router: 'Counter',
         name: 'go to Counter'
     },
+    {
+        router: 'WaterfallGrid',
+        name: 'go to WaterfallGrid'
+    },
 ]
 
 @widthLoading(props => props.loading)
 class Home extends Component {
-
-    static navigationOptions = ({ navigation }) => ({
-        headerShown: false
-    });
-
     constructor(props) {
         super(props);
     }
@@ -67,7 +65,7 @@ class Home extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: '#fff', }}>
                 <FlatList
-                    refreshControl={<SmartRefreshLayout HeaderComponent={() => <BezierRadarHeader primaryColor='#59b8fa' />} />}
+                    refreshControl={<SmartRefreshLayout HeaderComponent={() => <BezierRadarHeader />} />}
                     data={List}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) =>
@@ -75,6 +73,7 @@ class Home extends Component {
                     }
                 />
                 {/* <TestModal /> */}
+                <Button onPress={imageUpload} >imageUpload</Button>
             </View>
         );
     }

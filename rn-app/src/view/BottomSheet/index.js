@@ -7,7 +7,6 @@ const BottomSheetIndex = ({ navigation }) => {
         <View>
             <Text style={styles.listItem} onPress={() => navigation.navigate('BottomSheet')}>BottomSheet</Text>
             <Text style={styles.listItem} onPress={() => navigation.navigate('BlurToolbar')}>BlurToolbar</Text>
-            <Text style={styles.listItem} onPress={() => navigation.navigate('BounceLayout')}>BounceLayout</Text>
         </View>
     )
 }

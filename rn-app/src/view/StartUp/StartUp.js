@@ -1,98 +1,73 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, StatusBar, Image } from 'react-native';
-import { Text } from '@/components'
-import * as Animatable from 'react-native-animatable';
-import TimerMixin from 'react-timer-mixin';
+import { Text } from '@zero-d/rn-components'
+import Animated, { FadeInUp, runOnJS } from 'react-native-reanimated'
+import { useTimeout } from 'ahooks'
+import { useActions } from '@/utils/hooks'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as userActions from '@/actions/user';
+import * as userOriginActions from '@/actions/user';
 import { getUserToken } from '@/utils/storage'
 
-class StartUp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-    }
+const StartUp = (props) => {
 
-    componentDidMount() {
-        console.log(this.props.dispatch);
-    }
+    const [finishPageShowTimeout, setFinishPageShowTimeout] = React.useState(undefined);
 
-    componentWillUnmount() {
-        this.timer && TimerMixin.clearTimeout(this.timer)
-    }
+    const userActions = useActions(userOriginActions);
 
-    checkUserToken() {
+    useTimeout(() => {
+        checkUserToken();
+    }, finishPageShowTimeout)
+
+    function checkUserToken() {
         getUserToken().then((data) => {
             if (data && data.access_token && data.username && data.password) {
-                this.refreshUserToken(data);
+                refreshUserToken(data);
             } else {
-                this.onCheckUserTokenRejected()
+                onCheckUserTokenRejected()
             }
         }).catch(error => {
-            this.onCheckUserTokenRejected()
+            onCheckUserTokenRejected()
         })
     }
 
-    refreshUserToken(params) {
-        let { userActions, navigation } = this.props;
+    function refreshUserToken(params) {
         let loginParams = {
             userName: params.userName,
             password: params.password
         }
         userActions.loginSaga(loginParams, (data) => {
-            this.showHomePage();
-        }, this.onCheckUserTokenRejected.bind(this))
+            showHomePage();
+        }, onCheckUserTokenRejected)
     }
 
-    onCheckUserTokenRejected() {
-        this.showHomePage();
+    function onCheckUserTokenRejected() {
+        showHomePage();
     }
 
-    onPageContentShow() {
-        this.timer = TimerMixin.setTimeout(() => {
-            // this.checkUserToken()
-            this.checkUserToken();
-        }, 300);
-    }
-
-    showHomePage() {
-        let { navigation } = this.props;
+    function showHomePage() {
+        let { navigation } = props;
         navigation.replace('Home');
     }
 
-    render() {
-        return (
-            <View>
-                <StatusBar translucent backgroundColor='transparent' barStyle='dark-content' />
-                <Animatable.View
-                    onAnimationEnd={() => this.onPageContentShow()}
-                    style={{ alignItems: 'center' }}
-                    animation="fadeInDown">
-                    <Text style={{ fontSize: 60 }}>this is a start up page</Text>
-                </Animatable.View>
-
-            </View>
-        );
+    function onPageContentShow(finished) {
+        'worklet';
+        if (finished) {
+            runOnJS(setFinishPageShowTimeout)(300)
+        }
     }
+
+    return (
+        <View style={{ flex: 1 }}>
+            <StatusBar translucent backgroundColor='transparent' barStyle='dark-content' />
+            <Animated.View entering={FadeInUp.duration(1000).withCallback(onPageContentShow)} style={{ alignItems: 'center' }}>
+                <Text style={{ fontSize: 60 }}>this is a start up page</Text>
+            </Animated.View>
+        </View>
+    )
 }
 
-const styles = StyleSheet.create({
-    btn: {
-        backgroundColor: '#999',
-        paddingVertical: 20,
-        marginBottom: 10,
-        fontSize: 60
-    },
-    startImg: {
-        width: '100%',
-        height: '100%'
-    }
-})
+const styles = StyleSheet.create({})
 
-export default connect((state, props) => ({
-}), dispatch => ({
-    userActions: bindActionCreators(userActions, dispatch),
-}))(StartUp);
+export default StartUp

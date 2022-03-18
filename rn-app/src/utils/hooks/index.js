@@ -1,11 +1,12 @@
-import React from 'react'
-import { useSafeState, useLockFn, usePersistFn } from 'ahooks'
+import React, { useMemo } from 'react'
+import { useSafeState, useLockFn, useMemoizedFn } from 'ahooks'
 import { commonActions } from '@/reducers/common'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 export function useLoadingCall() {
     let dispatch = useDispatch();
-    return usePersistFn(async (fn, ...args) => {
+    return useMemoizedFn(async (fn, ...args) => {
         try {
             dispatch(commonActions.startLoading())
             let res = await fn(...args);
@@ -16,6 +17,23 @@ export function useLoadingCall() {
             dispatch(commonActions.endLoading())
         }
     })
+}
+
+export function useActions(actions, deps) {
+    const dispatch = useDispatch()
+    return useMemo(
+        () => {
+            if (Array.isArray(actions)) {
+                return actions.map(a => bindActionCreators(a, dispatch))
+            }
+            return bindActionCreators(actions, dispatch)
+        },
+        deps ? [dispatch, ...deps] : [dispatch]
+    )
+}
+
+export function useShallowEqualSelector(selector) {
+    return useSelector(selector, shallowEqual)
 }
 
 export function useArray(initialValue) {
@@ -42,4 +60,27 @@ export function useArray(initialValue) {
     };
 
     return [state, utils];
+}
+
+export function useLayout() {
+    const [layout, setLayout] = React.useState({ height: 0, width: 0, measured: false });
+
+    const onLayout = React.useCallback(
+        (e) => {
+            const { height, width } = e.nativeEvent.layout;
+
+            if (height === layout.height && width === layout.width) {
+                return;
+            }
+
+            setLayout({
+                height,
+                width,
+                measured: true,
+            });
+        },
+        [layout.height, layout.width]
+    );
+
+    return [layout, onLayout];
 }

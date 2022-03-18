@@ -1,4 +1,4 @@
-import ScaleSize from '@zero-d/rn-components/src/utils/common/scaleSize';
+import { ScaleSize } from '@zero-d/rn-components';
 
 const instance = new ScaleSize({
     portraitWidth: 750,

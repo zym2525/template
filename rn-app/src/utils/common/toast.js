@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ToastAndroid } from 'react-native';
-import { Toast } from '@ant-design/react-native'
+import { Toast } from '@zero-d/rn-components'
 
 // export const toast = (content, position = ToastAndroid.CENTER) => {
 //     ToastAndroid.showWithGravity(content, ToastAndroid.SHORT, position);
