@@ -11,7 +11,7 @@ function registerRoutes(app) {
     let mockLastIndex
     const { mocks } = require('./index.js')
     const mocksForServer = mocks.map(route => {
-        return responseFake(route.url, route.type, route.response)
+        return responseFake(route.url, route.type, route.response, route.delay)
     })
     for (const mock of mocksForServer) {
         app[mock.type](mock.url, mock.response)
@@ -33,13 +33,15 @@ function unregisterRoutes() {
 }
 
 // for mock server
-const responseFake = (url, type, respond) => {
+const responseFake = (url, type, respond, delayTime = 1000) => {
     return {
         url: new RegExp(`${url}`),
         type: type || 'get',
         response(req, res) {
             console.log('request invoke:' + req.path)
-            res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
+            setTimeout(() => {
+                res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
+            }, delayTime)
         }
     }
 }
@@ -79,6 +81,14 @@ function startServer() {
             }
         }
     })
+    app.all('*', function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "*");
+        res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+        res.header("X-Powered-By", ' 3.2.1')
+        res.header("Content-Type", "application/json;charset=utf-8");
+        next();
+    });
     app.listen(3000);
 }
 

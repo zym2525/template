@@ -4,6 +4,11 @@ export {
     trim,
     toFixed,
     toDou,
+    isRegister,
+    isSubjectExercise,
+    isComprehensiveExercise,
+    isWriting,
+    isDictation,
     bytesToSize,
     border1Px,
     nbsp2Ensp,
@@ -20,7 +25,6 @@ export {
     webViewSetSize,
     setScrollSize,
     getScrollSize,
-    scale,
     px2dp
 } from './scaleSize'
 
@@ -36,6 +40,6 @@ export {
 
 export { showModal } from './showModal'
 
-// export { upload, convertToImageUri, createReadOssPath } from './upload'
+export { upload, convertToImageUri, createReadOssPath } from './upload'
 
-// export { imageUpload, createOssPath } from './imagePicker'
+export { imageUpload, createOssPath } from './imagePicker'

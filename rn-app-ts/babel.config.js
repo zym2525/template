@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   presets: ['module:metro-react-native-babel-preset'],
   plugins: [
@@ -7,17 +9,14 @@ module.exports = {
         "legacy": true
       }
     ],
-    [
-      "lodash",
-      {
-        "id": "recompact"
-      }
-    ],
+    "lodash",
     [
       "import",
       {
-        libraryName: "@ant-design/react-native"
-      }
+        libraryName: "ahooks",
+        camel2DashComponentName: false
+      },
+      "ahooks"
     ],
     [
       "module-resolver",
@@ -27,14 +26,17 @@ module.exports = {
         ],
         "alias": {
           "@": "./src",
+          "@config": "./config",
         }
       }
-    ]
+    ],
+    'react-native-reanimated/plugin',
   ],
   env: {
-    "production": {
-      "plugins": [
-        "transform-remove-console"
+    production: {
+      plugins: [
+        "transform-remove-console",
+        "react-native-paper/babel"
       ]
     }
   }

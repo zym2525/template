@@ -1,21 +1,15 @@
-import { StyleSheet, NativeModules, View, NativeMethods, MeasureOnSuccessCallback, StyleProp, ImageStyle, ViewStyle, TextStyle } from 'react-native'
-import { RefObject, ComponentType, ReactNode } from 'react'
+import { StyleSheet, NativeModules, StyleProp, NativeMethods, Constructor } from 'react-native'
+import React, { RefObject } from 'react'
 import theme from '@/style/theme'
 import { webViewSetSize } from './scaleSize'
+import { UserState } from '@/reducers/user'
+import { ExerciseType } from '@/constants'
 
-export type AllStyle = ViewStyle | TextStyle | ImageStyle;
-
-export type MeasureCallback = {
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    pageX: number,
-    pageY: number
-}
-
-export const measure = <T extends NativeMethods,>(ref: RefObject<T>) => new Promise<MeasureCallback>((resolve) => {
-    ref.current?.measure((x, y, width, height, pageX, pageY) => {
+export const measure = <T extends NativeMethods>(ref: T) => new Promise<{
+    x: number, y: number, width: number, height: number,
+    pageX: number, pageY: number
+}>((resolve) => {
+    ref.measure((x, y, width, height, pageX, pageY) => {
         resolve({
             x, y,
             width, height,
@@ -25,7 +19,7 @@ export const measure = <T extends NativeMethods,>(ref: RefObject<T>) => new Prom
 });
 
 //切换样式
-export function tabStyle(condition: boolean, StyleOne: AllStyle, StyleTwo: AllStyle) {
+export function tabStyle(condition: boolean, StyleOne: StyleProp<any>, StyleTwo: StyleProp<any>) {
     return condition ? [StyleOne, StyleTwo] : StyleOne;
 }
 
@@ -34,21 +28,13 @@ export function trim(str: string) {
     return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
-export function curry(fn: (...armgs: any) => any) {
-    var args = [].slice.call(arguments, 1);
-    return function () {
-        var _args = args.concat([].slice.call(arguments));
-        return fn.apply(null, _args);
-    }
-}
-
-export function toFixed(number: string, pos: number) {
+export function toFixed(number: number, pos: number) {
     //return Math.round(number*Math.pow(10, pos))/Math.pow(10, pos);       
-    var f = parseFloat(number);
+    var f = parseFloat(String(number));
     if (isNaN(f)) {
         return false;
     }
-    var f = Math.round(Number(number) * 100) / 100;
+    var f = Math.round(number * 100) / 100;
     var s = f.toString();
     var rs = s.indexOf('.');
     if (rs < 0) {
@@ -64,6 +50,29 @@ export function toFixed(number: string, pos: number) {
 // 加0
 export function toDou(num: number) {
     return num < 10 ? '0' + num : '' + num;
+}
+
+//是否登录
+export const isRegister = (user: UserState['user']) => user != null;
+
+//判断客观题
+export function isSubjectExercise(exerciseType: ExerciseType) {
+    return exerciseType > 3;
+}
+
+//判断复合题
+export function isComprehensiveExercise(exerciseType: ExerciseType) {
+    return (exerciseType == 8 || exerciseType == 9 || exerciseType == 11);
+}
+
+//判断写作
+export function isWriting(exerciseType: ExerciseType) {
+    return (exerciseType == 7 || exerciseType == 12);
+}
+
+//判断默写
+export function isDictation(exerciseType: ExerciseType) {
+    return (exerciseType == 13);
 }
 
 //转换大小
@@ -99,7 +108,7 @@ export function nbsp2Ensp(str: string) {
 }
 
 export function fitPx(str: string) {
-    return str.replace(/\d+(\.\d+)?px/g, s => `${webViewSetSize(s.slice(0, -2))}px`);
+    return str.replace(/\d+(\.\d+)?px/g, s => `${webViewSetSize(Number(s.slice(0, -2)))}px`);
 }
 
 //处理url后缀MP4
@@ -132,8 +141,8 @@ export function checkPhoneNumberValidity(phoneNumber: string) {
  * @param obj
  * @returns {string}
  */
-export function sort_ascii(obj: { [propName: string]: string | number; }) {
-    let arr = new Array();
+export function sort_ascii(obj: { [p: string]: any }): string {
+    let arr = new Array<string>();
     let num = 0;
     for (let i in obj) {
         arr[num] = i;
@@ -164,7 +173,7 @@ export function sort_ascii(obj: { [propName: string]: string | number; }) {
  * const enhance = compose(pure, withProps({foo: 'bar'}));
  * const Component = enhance(MyComponent);
  */
-export function compose() {
+export function compose(): Function {
     for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
         funcs[_key] = arguments[_key];
     }

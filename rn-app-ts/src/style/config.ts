@@ -15,4 +15,4 @@ const StyleConfig = {
     status_height: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight
 };
 
-export default StyleConfig;
+export default StyleConfig

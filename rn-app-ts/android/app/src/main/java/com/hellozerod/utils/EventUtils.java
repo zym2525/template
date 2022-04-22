@@ -7,8 +7,6 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
-import java.util.HashMap;
-
 public class EventUtils {
 
     public static void sendEvent(View view, int eventType, WritableMap event) {

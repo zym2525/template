@@ -1,10 +1,6 @@
 package com.hellozerod.utils;
 
-import android.os.Build;
-
 import java.util.HashMap;
-
-import androidx.annotation.RequiresApi;
 
 public class AccountUtils {
 

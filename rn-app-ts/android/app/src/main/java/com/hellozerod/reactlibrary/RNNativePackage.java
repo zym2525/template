@@ -15,7 +15,7 @@ public class RNNativePackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Arrays.asList(new NativeModule[]{
                 // Modules from third-party
-                new RNConfigModule(reactContext)
+//                new RNConfigModule(reactContext)
         });
     }
 
