@@ -5,7 +5,6 @@ import { Button } from 'react-native-paper'
 import ContactItem from './ContactItem'
 import { useFocusEffect } from '@react-navigation/native';
 import Mock from 'mockjs'
-import { useSharedValue, useAnimatedStyle } from 'react-native-reanimated'
 import type { StackScreenProps } from '@react-navigation/stack';
 
 type NameListItem = {
@@ -54,13 +53,6 @@ const BottomSheetPage = () => {
         ),
         []
     );
-
-    const animatedIndex = useSharedValue(0);
-
-    const animatedStyle = useAnimatedStyle(() => {
-        console.log('animatedIndex: ', animatedIndex);
-        return {}
-    })
 
     return (
         <View style={styles.container}>

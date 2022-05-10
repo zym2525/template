@@ -197,11 +197,11 @@ const BaseTabBarItem = ({
                     )}
                 </View>
             )}
-            {
+            {/* {
                 focused &&
                 <Image style={styles.rightArrow} source={require('@/img/personInfo/icon_more.png')}
                 />
-            }
+            } */}
         </View>
     </View>
 }
