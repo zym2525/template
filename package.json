@@ -1,6 +1,6 @@
 {
   "name": "@zero-d/zerod-template",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "zerod-template",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
